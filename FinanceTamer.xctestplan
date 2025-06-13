@@ -1,0 +1,29 @@
+{
+  "configurations" : [
+    {
+      "id" : "DE79A053-CBF9-4BAC-A1CA-F4B75AE80AA9",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:FinanceTamer.xcodeproj",
+      "identifier" : "CE30B99E2DF5DBB100EA2F39",
+      "name" : "FinanceTamer"
+    }
+  },
+  "testTargets" : [
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:FinanceTamer.xcodeproj",
+        "identifier" : "CEBECBEF2DFB076700DD2B8B",
+        "name" : "FTTests"
+      }
+    }
+  ],
+  "version" : 1
+}
