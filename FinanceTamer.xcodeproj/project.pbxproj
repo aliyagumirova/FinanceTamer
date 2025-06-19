@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CE16FA8F2E047F1200CB663F /* SortOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE16FA8E2E047F1200CB663F /* SortOption.swift */; };
 		CE30B9A32DF5DBB100EA2F39 /* FinanceTamerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE30B9A22DF5DBB100EA2F39 /* FinanceTamerApp.swift */; };
-		CE30B9A52DF5DBB100EA2F39 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE30B9A42DF5DBB100EA2F39 /* ContentView.swift */; };
 		CE30B9A72DF5DBB500EA2F39 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CE30B9A62DF5DBB500EA2F39 /* Assets.xcassets */; };
 		CE30B9AA2DF5DBB500EA2F39 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CE30B9A92DF5DBB500EA2F39 /* Preview Assets.xcassets */; };
 		CE30B9BE2DF5DD8800EA2F39 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE30B9BD2DF5DD8800EA2F39 /* Category.swift */; };
@@ -21,6 +21,10 @@
 		CE30B9CC2DF5DDD800EA2F39 /* TransactionsFileCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE30B9CB2DF5DDD800EA2F39 /* TransactionsFileCache.swift */; };
 		CE30B9CE2DF5DDE700EA2F39 /* Transaction+JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE30B9CD2DF5DDE700EA2F39 /* Transaction+JSON.swift */; };
 		CE30B9D02DF5DDF300EA2F39 /* Transaction+CSV.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE30B9CF2DF5DDF300EA2F39 /* Transaction+CSV.swift */; };
+		CE8E232D2E006B62008800BA /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8E232C2E006B61008800BA /* MainTabView.swift */; };
+		CE8E232F2E006DC8008800BA /* TransactionsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8E232E2E006DC8008800BA /* TransactionsListView.swift */; };
+		CE8E23312E006DE5008800BA /* TransactionRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8E23302E006DE5008800BA /* TransactionRow.swift */; };
+		CE8E23332E007242008800BA /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8E23322E007242008800BA /* HistoryView.swift */; };
 		CEBECBF32DFB076700DD2B8B /* FTTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBECBF22DFB076700DD2B8B /* FTTests.swift */; };
 		CEBECBF92DFB077600DD2B8B /* TransactionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE30B9D32DF5DE0B00EA2F39 /* TransactionTests.swift */; };
 /* End PBXBuildFile section */
@@ -36,9 +40,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		CE16FA8E2E047F1200CB663F /* SortOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortOption.swift; sourceTree = "<group>"; };
 		CE30B99F2DF5DBB100EA2F39 /* FinanceTamer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FinanceTamer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE30B9A22DF5DBB100EA2F39 /* FinanceTamerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinanceTamerApp.swift; sourceTree = "<group>"; };
-		CE30B9A42DF5DBB100EA2F39 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		CE30B9A62DF5DBB500EA2F39 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CE30B9A92DF5DBB500EA2F39 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		CE30B9BD2DF5DD8800EA2F39 /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
@@ -52,6 +56,10 @@
 		CE30B9CD2DF5DDE700EA2F39 /* Transaction+JSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Transaction+JSON.swift"; sourceTree = "<group>"; };
 		CE30B9CF2DF5DDF300EA2F39 /* Transaction+CSV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Transaction+CSV.swift"; sourceTree = "<group>"; };
 		CE30B9D32DF5DE0B00EA2F39 /* TransactionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionTests.swift; sourceTree = "<group>"; };
+		CE8E232C2E006B61008800BA /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
+		CE8E232E2E006DC8008800BA /* TransactionsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionsListView.swift; sourceTree = "<group>"; };
+		CE8E23302E006DE5008800BA /* TransactionRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionRow.swift; sourceTree = "<group>"; };
+		CE8E23322E007242008800BA /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
 		CEBECBF02DFB076700DD2B8B /* FTTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FTTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CEBECBF22DFB076700DD2B8B /* FTTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FTTests.swift; sourceTree = "<group>"; };
 		CEBECBFA2DFB080200DD2B8B /* FinanceTamer.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = FinanceTamer.xctestplan; sourceTree = "<group>"; };
@@ -97,13 +105,13 @@
 		CE30B9A12DF5DBB100EA2F39 /* FinanceTamer */ = {
 			isa = PBXGroup;
 			children = (
+				CE8E232B2E0067D4008800BA /* Views */,
 				CE30B9D52DF7784500EA2F39 /* Mock services */,
 				CE30B9BC2DF5DD4F00EA2F39 /* Models */,
 				CE30B9BA2DF5DD3C00EA2F39 /* Cache */,
 				CE30B9B92DF5DD3400EA2F39 /* Extensions */,
 				CE30B9B72DF5DD2600EA2F39 /* Tests */,
 				CE30B9A22DF5DBB100EA2F39 /* FinanceTamerApp.swift */,
-				CE30B9A42DF5DBB100EA2F39 /* ContentView.swift */,
 				CE30B9A62DF5DBB500EA2F39 /* Assets.xcassets */,
 				CE30B9A82DF5DBB500EA2F39 /* Preview Content */,
 			);
@@ -162,6 +170,18 @@
 				CE30B9C92DF5DDCD00EA2F39 /* TransactionsService.swift */,
 			);
 			path = "Mock services";
+			sourceTree = "<group>";
+		};
+		CE8E232B2E0067D4008800BA /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				CE8E232C2E006B61008800BA /* MainTabView.swift */,
+				CE8E232E2E006DC8008800BA /* TransactionsListView.swift */,
+				CE8E23302E006DE5008800BA /* TransactionRow.swift */,
+				CE8E23322E007242008800BA /* HistoryView.swift */,
+				CE16FA8E2E047F1200CB663F /* SortOption.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		CEBECBF12DFB076700DD2B8B /* FTTests */ = {
@@ -272,13 +292,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CE30B9A52DF5DBB100EA2F39 /* ContentView.swift in Sources */,
+				CE8E23312E006DE5008800BA /* TransactionRow.swift in Sources */,
+				CE8E232F2E006DC8008800BA /* TransactionsListView.swift in Sources */,
 				CE30B9C82DF5DDC300EA2F39 /* BankAccountsService.swift in Sources */,
 				CE30B9A32DF5DBB100EA2F39 /* FinanceTamerApp.swift in Sources */,
 				CE30B9C62DF5DDB800EA2F39 /* CategoriesService.swift in Sources */,
 				CE30B9CA2DF5DDCD00EA2F39 /* TransactionsService.swift in Sources */,
 				CE30B9D02DF5DDF300EA2F39 /* Transaction+CSV.swift in Sources */,
 				CE30B9CE2DF5DDE700EA2F39 /* Transaction+JSON.swift in Sources */,
+				CE8E23332E007242008800BA /* HistoryView.swift in Sources */,
+				CE16FA8F2E047F1200CB663F /* SortOption.swift in Sources */,
+				CE8E232D2E006B62008800BA /* MainTabView.swift in Sources */,
 				CE30B9CC2DF5DDD800EA2F39 /* TransactionsFileCache.swift in Sources */,
 				CE30B9C42DF5DDAA00EA2F39 /* Transaction.swift in Sources */,
 				CE30B9C22DF5DD9B00EA2F39 /* BankAccount.swift in Sources */,
@@ -489,6 +513,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.aliya.FTTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -506,6 +531,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.aliya.FTTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
