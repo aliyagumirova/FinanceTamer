@@ -15,45 +15,48 @@ struct TransactionRow: View {
 
     var body: some View {
         HStack(spacing: 12) {
-            if let category = category {
-                ZStack {
-                    Circle()
-                        .fill(Color("ImageBackgroundColor"))
-                        .frame(width: 22, height: 22)
+            ZStack {
+                Circle()
+                    .fill(Color("ImageBackgroundColor"))
+                    .frame(width: 30, height: 30)
 
+                if let category {
                     Text(String(category.emoji))
-                        .font(.system(size: 12))
+                        .font(.system(size: 14.5))
                 }
-                .frame(width: 34, height: 34)
+            }
 
-                VStack(alignment: .leading, spacing: 2) {
-                    Text(category.name)
-                        .font(.body)
+            VStack(alignment: .leading, spacing: 4) {
+                Text(category?.name ?? "—")
+                    .font(.system(size: 17))
+                    .foregroundColor(.primary)
+                    .lineLimit(1)
 
-                    if !transaction.comment.isEmpty {
-                        Text(transaction.comment)
-                            .font(.caption)
-                            .lineLimit(1)
-                            .foregroundColor(.gray)
-                    }
-                }
-            } else {
-                VStack(alignment: .leading) {
+                if !transaction.comment.isEmpty {
                     Text(transaction.comment)
-                        .font(.body)
+                        .font(.system(size: 15))
+                        .foregroundColor(.secondary)
+                        .lineLimit(1)
                 }
             }
 
             Spacer()
 
-            HStack(spacing: 14) {
+            HStack(spacing: 6) {
                 Text("\(transaction.amount.formatted()) ₽")
+                    .font(.system(size: 17))
+                    .foregroundColor(.primary)
 
                 Image(systemName: "chevron.right")
-                    .foregroundColor(Color("ArrowColor"))
                     .font(.system(size: 13, weight: .semibold))
+                    .foregroundColor(Color("ArrowColor"))
+                    .opacity(0.3) 
             }
         }
+        .padding(.vertical, 10)
+        .padding(.horizontal, 16)
+        .background(Color.white)
+        .contentShape(Rectangle())
         .onAppear {
             Task {
                 let all = try? await categoriesService.categories()

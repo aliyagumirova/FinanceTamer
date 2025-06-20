@@ -31,11 +31,10 @@ struct TransactionsListView: View {
                 VStack(alignment: .leading, spacing: 0) {
                     Text(direction == .income ? "Доходы сегодня" : "Расходы сегодня")
                         .font(.largeTitle).bold()
-                        .padding(.horizontal)
-                        .padding(8)
+                        .padding(.leading, 16)
 
                     List {
-                        Section {
+                        Section(header: EmptyView()) {
                             HStack {
                                 Text("Всего")
                                 Spacer()
@@ -51,6 +50,7 @@ struct TransactionsListView: View {
 
                                 TransactionRow(transaction: transaction)
                                     .listRowBackground(Color.white)
+                                    .listRowInsets(EdgeInsets())
                                     .onAppear {
                                         if index == transactions.count - 1, hasMore {
                                             Task { await loadTransactions(page: page) }
@@ -68,6 +68,8 @@ struct TransactionsListView: View {
                             }
                         }
                     }
+                    .padding(.leading, -4)
+                    
                     .listStyle(.insetGrouped)
                     .scrollContentBackground(.hidden)
                 }

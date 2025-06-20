@@ -9,27 +9,29 @@ import SwiftUI
 
 struct HistoryView: View {
     let direction: Direction
-    
+
     @State private var startDate: Date = Calendar.current.date(byAdding: .month, value: -1, to: Date()) ?? Date()
-    @State private var endDate:   Date = Date()
+    @State private var endDate: Date = Date()
     
     @State private var transactions: [Transaction] = []
-    @State private var totalAmount:  Decimal       = 0
+    @State private var totalAmount: Decimal = 0
     
     @State private var showSortOptions = false
     @State private var sortOption: SortOption = .byDate
-    
+
+    @Environment(\.dismiss) private var dismiss
+
     private let transactionsService = TransactionsService()
-    private let categoriesService   = CategoriesService()
-    
+    private let categoriesService = CategoriesService()
+
     var body: some View {
         ZStack {
             Color("BackgroundColor").ignoresSafeArea()
-            
-            VStack(alignment: .leading, spacing: 1) {
+
+            VStack(alignment: .leading, spacing: 0) {
                 Text("Моя история")
                     .font(.largeTitle).bold()
-                    .padding(.horizontal)
+                    .padding(.leading)
                 
                 List {
                     Section {
@@ -63,19 +65,32 @@ struct HistoryView: View {
                     .listRowBackground(Color.white)
 
                     Section(header: Text("ОПЕРАЦИИ")
-                                .font(.caption)
-                                .foregroundColor(.gray)) {
+                        .font(.caption)
+                        .foregroundColor(.gray)) {
                         ForEach(transactions.indices, id: \.self) { idx in
                             TransactionRow(transaction: transactions[idx])
                                 .listRowBackground(Color.white)
+                                .listRowInsets(EdgeInsets())
                         }
                     }
                 }
+                .padding(.leading, -4)
                 .listStyle(.insetGrouped)
                 .scrollContentBackground(.hidden)
             }
             .background(Color("BackgroundColor"))
             .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button(action: { dismiss() }) {
+                        HStack {
+                            Image(systemName: "chevron.left")
+                                .font(.system(size: 17, weight: .semibold))
+                            Text("Назад")
+                        }
+                        .foregroundColor(Color("ClockColor"))
+                    }
+                }
+
                 ToolbarItem(placement: .navigationBarTrailing) {
                     HStack {
                         Button { showSortOptions = true } label: {
@@ -88,7 +103,7 @@ struct HistoryView: View {
                         }
                     }
                 }
-            }
+            }.navigationBarBackButtonHidden(true) 
         }
         .confirmationDialog("Сортировать по:",
                             isPresented: $showSortOptions,
@@ -103,10 +118,10 @@ struct HistoryView: View {
         }
         .onAppear { Task { await loadTransactions() } }
     }
-    
+
     private func loadTransactions() async {
         let dayStart = Calendar.current.startOfDay(for: startDate)
-        let dayEnd   = Calendar.current.date(bySettingHour: 23, minute: 59, second: 59, of: endDate) ?? endDate
+        let dayEnd = Calendar.current.date(bySettingHour: 23, minute: 59, second: 59, of: endDate) ?? endDate
         
         do {
             let all = try await transactionsService.transactions(accountId: 1,
@@ -121,13 +136,13 @@ struct HistoryView: View {
             DispatchQueue.main.async {
                 transactions = filtered
                 applySort()
-                totalAmount  = filtered.reduce(0) { $0 + $1.amount }
+                totalAmount = filtered.reduce(0) { $0 + $1.amount }
             }
         } catch {
             print("Ошибка: \(error)")
         }
     }
-    
+
     private func applySort() {
         switch sortOption {
         case .byDate:
