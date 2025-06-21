@@ -41,6 +41,9 @@ struct HistoryView: View {
                             DatePicker("", selection: $startDate, displayedComponents: [.date])
                                 .labelsHidden()
                                 .accentColor(Color("AccentColor"))
+                                .background(Color.accentColor.opacity(0.12))
+                                .clipShape(RoundedRectangle(cornerRadius: 8))
+                                .environment(\.locale, Locale(identifier: "ru_RU"))
                                 .onChange(of: startDate) {
                                     if startDate > endDate { endDate = startDate }
                                     Task { await loadTransactions() }
@@ -51,6 +54,10 @@ struct HistoryView: View {
                             Spacer()
                             DatePicker("", selection: $endDate, in: ...Date(), displayedComponents: [.date])
                                 .labelsHidden()
+                                .accentColor(Color("AccentColor"))
+                                .background(Color.accentColor.opacity(0.12))
+                                .clipShape(RoundedRectangle(cornerRadius: 8))
+                                .environment(\.locale, Locale(identifier: "ru_RU"))
                                 .onChange(of: endDate) {
                                     if endDate < startDate { startDate = endDate }
                                     Task { await loadTransactions() }
@@ -103,7 +110,7 @@ struct HistoryView: View {
                         }
                     }
                 }
-            }.navigationBarBackButtonHidden(true) 
+            }.navigationBarBackButtonHidden(true)
         }
         .confirmationDialog("Сортировать по:",
                             isPresented: $showSortOptions,
