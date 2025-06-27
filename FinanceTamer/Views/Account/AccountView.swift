@@ -46,9 +46,6 @@ struct AccountView: View {
                         print("refreshed")
                     }
                 }
-                //                .onTapGesture {
-                //                    isBalanceFieldFocused = false
-                //                }
             }
             .onShake {
                 withAnimation(.easeInOut(duration: 0.3)) {
@@ -61,6 +58,7 @@ struct AccountView: View {
                     Button(editing ? "Сохранить" : "Редактировать") {
                         if editing {
                             saveChanges()
+                            isBalanceFieldFocused = false
                         }
                         editing.toggle()
                     }
@@ -118,11 +116,6 @@ struct AccountView: View {
                         .keyboardType(.decimalPad)
                         .multilineTextAlignment(.trailing)
                         .focused($isBalanceFieldFocused)
-                        .onAppear {
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                                isBalanceFieldFocused = true
-                            }
-                        }
                 } else {
                     Text(formattedBalance)
                         .foregroundColor(Color("ArrowColor"))
