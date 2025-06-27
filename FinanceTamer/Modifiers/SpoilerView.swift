@@ -77,8 +77,8 @@ extension View {
             .opacity(isOn.wrappedValue ? 0 : 1)
             .modifier(SpoilerModifier(isOn: isOn.wrappedValue))
             .animation(.default, value: isOn.wrappedValue)
-            .onTapGesture {
-                isOn.wrappedValue.toggle()
-            }
+//            .onTapGesture {
+//                isOn.wrappedValue.toggle()
+//            }
     }
 }
