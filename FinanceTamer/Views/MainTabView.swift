@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct MainTabView: View {
-
+    
     var body: some View {
         TabView {
             
@@ -27,7 +27,7 @@ struct MainTabView: View {
                         Text("Доходы")
                     }
                 
-                Text("Счет")
+                AccountView()
                     .tabItem {
                         Image("Account")
                             .renderingMode(.template)

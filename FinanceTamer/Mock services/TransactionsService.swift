@@ -22,7 +22,7 @@ final class TransactionsService {
             createdAt: Date().addingTimeInterval(-86400 * 30),        // 18 мая 2025
             updatedAt: Date().addingTimeInterval(-86400 * 30)
         ),
-
+        
         Transaction(
             id: 4,
             accountId: 1,
@@ -33,7 +33,7 @@ final class TransactionsService {
             createdAt: Date().addingTimeInterval(-86400 * 20),        // 28 мая 2025
             updatedAt: Date().addingTimeInterval(-86400 * 20)
         ),
-
+        
         Transaction(
             id: 5,
             accountId: 1,
@@ -44,7 +44,7 @@ final class TransactionsService {
             createdAt: Date().addingTimeInterval(-86400 * 10),        // 7 июня 2025
             updatedAt: Date().addingTimeInterval(-86400 * 10)
         ),
-
+        
         Transaction(
             id: 6,
             accountId: 1,
@@ -55,7 +55,7 @@ final class TransactionsService {
             createdAt: Date().addingTimeInterval(-86400 * 5),        // 12 июня 2025
             updatedAt: Date().addingTimeInterval(-86400 * 5)
         ),
-
+        
         Transaction(
             id: 7,
             accountId: 1,
@@ -66,7 +66,7 @@ final class TransactionsService {
             createdAt: Date().addingTimeInterval(-86400 * 3),        // 14 июня 2025
             updatedAt: Date().addingTimeInterval(-86400 * 3)
         ),
-
+        
         Transaction(
             id: 8,
             accountId: 1,
@@ -77,7 +77,7 @@ final class TransactionsService {
             createdAt: Date().addingTimeInterval(-86400 * 7),        // 10 июня 2025
             updatedAt: Date().addingTimeInterval(-86400 * 7)
         ),
-
+        
         Transaction(
             id: 9,
             accountId: 1,
@@ -88,7 +88,7 @@ final class TransactionsService {
             createdAt: Date().addingTimeInterval(-86400 * 60),        // 18 апреля 2025
             updatedAt: Date().addingTimeInterval(-86400 * 60)
         ),
-
+        
         Transaction(
             id: 10,
             accountId: 1,
@@ -99,7 +99,7 @@ final class TransactionsService {
             createdAt: Date().addingTimeInterval(-86400 * 2),        // 15 июня 2025
             updatedAt: Date().addingTimeInterval(-86400 * 2)
         ),
-
+        
         Transaction(
             id: 11,
             accountId: 1,
@@ -110,7 +110,7 @@ final class TransactionsService {
             createdAt: Date().addingTimeInterval(-86400),        // 16 июня 2025
             updatedAt: Date().addingTimeInterval(-86400)
         ),
-
+        
         Transaction(
             id: 12,
             accountId: 1,
@@ -144,7 +144,7 @@ final class TransactionsService {
             createdAt: Date(),                   // сегодня
             updatedAt: Date()
         ),
-
+        
         Transaction(
             id: 14,
             accountId: 1,
@@ -155,7 +155,7 @@ final class TransactionsService {
             createdAt: Date(),
             updatedAt: Date()
         ),
-
+        
         Transaction(
             id: 15,
             accountId: 1,
@@ -166,7 +166,7 @@ final class TransactionsService {
             createdAt: Date(),
             updatedAt: Date()
         ),
-
+        
         Transaction(
             id: 16,
             accountId: 1,
@@ -187,7 +187,7 @@ final class TransactionsService {
             $0.transactionDate <= endDate
         }
     }
-
+    
     
     func create(accountId: Int, categoryId: Int, amount: Decimal, transactionDate: Date, comment: String) async throws -> Transaction {
         let now = Date()
@@ -205,7 +205,7 @@ final class TransactionsService {
         nextId += 1
         return transaction
     }
-
+    
     
     func update(_ transaction: Transaction) async throws -> Transaction? {
         if let index = transactions.firstIndex(where: { $0.id == transaction.id }) {
@@ -217,20 +217,20 @@ final class TransactionsService {
                 transactionDate: transaction.transactionDate,
                 comment: transaction.comment,
                 createdAt: transactions[index].createdAt,
-                updatedAt: Date() 
+                updatedAt: Date()
             )
             transactions[index] = updatedTransaction
             return updatedTransaction
         }
         return nil
     }
-
+    
     
     func delete(id: Int) async throws -> Bool {
         let originalCount = transactions.count
         transactions.removeAll { $0.id == id }
         return transactions.count < originalCount
     }
-
+    
 }
 

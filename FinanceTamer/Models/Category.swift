@@ -16,18 +16,18 @@ struct Category: Identifiable, Codable {
     var direction: Direction {
         isIncome ? .income : .outcome
     }
-
+    
     init(id: Int, name: String, emoji: Character, isIncome: Bool) {
         self.id = id
         self.name = name
         self.emoji = emoji
         self.isIncome = isIncome
     }
-
+    
     enum CodingKeys: String, CodingKey {
         case id, name, emoji, isIncome
     }
-
+    
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         id = try container.decode(Int.self, forKey: .id)
@@ -40,7 +40,7 @@ struct Category: Identifiable, Codable {
         }
         emoji = emojiChar
     }
-
+    
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(id, forKey: .id)

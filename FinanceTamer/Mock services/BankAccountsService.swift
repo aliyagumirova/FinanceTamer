@@ -14,7 +14,7 @@ final class BankAccountsService {
         userId: 1,
         name: "Main accaunt",
         balance: 10_000.00,
-        currency: "RUB",
+        currency: "₽",
         createdAt: Date(),
         updatedAt: Date()
     )
@@ -39,7 +39,7 @@ final class BankAccountsService {
         
         return account
     }
-
-
+    
+    
 }
 

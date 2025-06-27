@@ -21,10 +21,10 @@ extension Transaction {
             "updatedAt": ISO8601DateFormatter().string(from: updatedAt)
         ]
     }
-
+    
     static func parse(jsonObject: Any) -> Transaction? {
         guard let dict = jsonObject as? [String: Any] else { return nil }
-
+        
         guard let id = dict["id"] as? Int,
               let accountId = dict["accountId"] as? Int,
               let categoryId = dict["categoryId"] as? Int,
@@ -39,7 +39,7 @@ extension Transaction {
               let updatedAt = ISO8601DateFormatter().date(from: updatedAtString) else {
             return nil
         }
-
+        
         return Transaction(
             id: id,
             accountId: accountId,
