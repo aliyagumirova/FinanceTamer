@@ -21,12 +21,18 @@
 		CE30B9CC2DF5DDD800EA2F39 /* TransactionsFileCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE30B9CB2DF5DDD800EA2F39 /* TransactionsFileCache.swift */; };
 		CE30B9CE2DF5DDE700EA2F39 /* Transaction+JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE30B9CD2DF5DDE700EA2F39 /* Transaction+JSON.swift */; };
 		CE30B9D02DF5DDF300EA2F39 /* Transaction+CSV.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE30B9CF2DF5DDF300EA2F39 /* Transaction+CSV.swift */; };
+		CE58FADE2E0C7B3200F51E05 /* ShakeDetectorModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE58FADD2E0C7B3200F51E05 /* ShakeDetectorModifier.swift */; };
 		CE8E232D2E006B62008800BA /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8E232C2E006B61008800BA /* MainTabView.swift */; };
 		CE8E232F2E006DC8008800BA /* TransactionsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8E232E2E006DC8008800BA /* TransactionsListView.swift */; };
 		CE8E23312E006DE5008800BA /* TransactionRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8E23302E006DE5008800BA /* TransactionRow.swift */; };
 		CE8E23332E007242008800BA /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8E23322E007242008800BA /* HistoryView.swift */; };
+		CEA8DF2D2E0C24C600526E1C /* AccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA8DF2C2E0C24C600526E1C /* AccountView.swift */; };
+		CEA8DF2F2E0C27B500526E1C /* CurrencyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA8DF2E2E0C27B500526E1C /* CurrencyManager.swift */; };
+		CEA8DF312E0C303A00526E1C /* CurrencySelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA8DF302E0C303A00526E1C /* CurrencySelectionView.swift */; };
 		CEBECBF32DFB076700DD2B8B /* FTTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBECBF22DFB076700DD2B8B /* FTTests.swift */; };
 		CEBECBF92DFB077600DD2B8B /* TransactionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE30B9D32DF5DE0B00EA2F39 /* TransactionTests.swift */; };
+		CEF585442E0F21280049EB64 /* SpoilerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF585432E0F21270049EB64 /* SpoilerView.swift */; };
+		CEF585462E0F2AA90049EB64 /* BalanceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF585452E0F2AA90049EB64 /* BalanceManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,13 +62,19 @@
 		CE30B9CD2DF5DDE700EA2F39 /* Transaction+JSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Transaction+JSON.swift"; sourceTree = "<group>"; };
 		CE30B9CF2DF5DDF300EA2F39 /* Transaction+CSV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Transaction+CSV.swift"; sourceTree = "<group>"; };
 		CE30B9D32DF5DE0B00EA2F39 /* TransactionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionTests.swift; sourceTree = "<group>"; };
+		CE58FADD2E0C7B3200F51E05 /* ShakeDetectorModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShakeDetectorModifier.swift; sourceTree = "<group>"; };
 		CE8E232C2E006B61008800BA /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
 		CE8E232E2E006DC8008800BA /* TransactionsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionsListView.swift; sourceTree = "<group>"; };
 		CE8E23302E006DE5008800BA /* TransactionRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionRow.swift; sourceTree = "<group>"; };
 		CE8E23322E007242008800BA /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
+		CEA8DF2C2E0C24C600526E1C /* AccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountView.swift; sourceTree = "<group>"; };
+		CEA8DF2E2E0C27B500526E1C /* CurrencyManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyManager.swift; sourceTree = "<group>"; };
+		CEA8DF302E0C303A00526E1C /* CurrencySelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencySelectionView.swift; sourceTree = "<group>"; };
 		CEBECBF02DFB076700DD2B8B /* FTTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FTTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CEBECBF22DFB076700DD2B8B /* FTTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FTTests.swift; sourceTree = "<group>"; };
 		CEBECBFA2DFB080200DD2B8B /* FinanceTamer.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = FinanceTamer.xctestplan; sourceTree = "<group>"; };
+		CEF585432E0F21270049EB64 /* SpoilerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpoilerView.swift; sourceTree = "<group>"; };
+		CEF585452E0F2AA90049EB64 /* BalanceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -105,14 +117,16 @@
 		CE30B9A12DF5DBB100EA2F39 /* FinanceTamer */ = {
 			isa = PBXGroup;
 			children = (
+				CE30B9A22DF5DBB100EA2F39 /* FinanceTamerApp.swift */,
+				CE30B9A62DF5DBB500EA2F39 /* Assets.xcassets */,
+				CE58FAE22E0C8D6D00F51E05 /* Modifiers */,
+				CE58FAE12E0C8D5500F51E05 /* Managers */,
 				CE8E232B2E0067D4008800BA /* Views */,
 				CE30B9D52DF7784500EA2F39 /* Mock services */,
 				CE30B9BC2DF5DD4F00EA2F39 /* Models */,
 				CE30B9BA2DF5DD3C00EA2F39 /* Cache */,
 				CE30B9B92DF5DD3400EA2F39 /* Extensions */,
 				CE30B9B72DF5DD2600EA2F39 /* Tests */,
-				CE30B9A22DF5DBB100EA2F39 /* FinanceTamerApp.swift */,
-				CE30B9A62DF5DBB500EA2F39 /* Assets.xcassets */,
 				CE30B9A82DF5DBB500EA2F39 /* Preview Content */,
 			);
 			path = FinanceTamer;
@@ -172,14 +186,50 @@
 			path = "Mock services";
 			sourceTree = "<group>";
 		};
+		CE58FADF2E0C8CB300F51E05 /* Transactions */ = {
+			isa = PBXGroup;
+			children = (
+				CE16FA8E2E047F1200CB663F /* SortOption.swift */,
+				CE8E23322E007242008800BA /* HistoryView.swift */,
+				CE8E23302E006DE5008800BA /* TransactionRow.swift */,
+				CE8E232E2E006DC8008800BA /* TransactionsListView.swift */,
+			);
+			path = Transactions;
+			sourceTree = "<group>";
+		};
+		CE58FAE02E0C8CD400F51E05 /* Account */ = {
+			isa = PBXGroup;
+			children = (
+				CEA8DF302E0C303A00526E1C /* CurrencySelectionView.swift */,
+				CEA8DF2C2E0C24C600526E1C /* AccountView.swift */,
+			);
+			path = Account;
+			sourceTree = "<group>";
+		};
+		CE58FAE12E0C8D5500F51E05 /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				CEA8DF2E2E0C27B500526E1C /* CurrencyManager.swift */,
+				CEF585452E0F2AA90049EB64 /* BalanceManager.swift */,
+			);
+			path = Managers;
+			sourceTree = "<group>";
+		};
+		CE58FAE22E0C8D6D00F51E05 /* Modifiers */ = {
+			isa = PBXGroup;
+			children = (
+				CE58FADD2E0C7B3200F51E05 /* ShakeDetectorModifier.swift */,
+				CEF585432E0F21270049EB64 /* SpoilerView.swift */,
+			);
+			path = Modifiers;
+			sourceTree = "<group>";
+		};
 		CE8E232B2E0067D4008800BA /* Views */ = {
 			isa = PBXGroup;
 			children = (
 				CE8E232C2E006B61008800BA /* MainTabView.swift */,
-				CE8E232E2E006DC8008800BA /* TransactionsListView.swift */,
-				CE8E23302E006DE5008800BA /* TransactionRow.swift */,
-				CE8E23322E007242008800BA /* HistoryView.swift */,
-				CE16FA8E2E047F1200CB663F /* SortOption.swift */,
+				CE58FAE02E0C8CD400F51E05 /* Account */,
+				CE58FADF2E0C8CB300F51E05 /* Transactions */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -295,18 +345,24 @@
 				CE8E23312E006DE5008800BA /* TransactionRow.swift in Sources */,
 				CE8E232F2E006DC8008800BA /* TransactionsListView.swift in Sources */,
 				CE30B9C82DF5DDC300EA2F39 /* BankAccountsService.swift in Sources */,
+				CEA8DF2D2E0C24C600526E1C /* AccountView.swift in Sources */,
 				CE30B9A32DF5DBB100EA2F39 /* FinanceTamerApp.swift in Sources */,
 				CE30B9C62DF5DDB800EA2F39 /* CategoriesService.swift in Sources */,
 				CE30B9CA2DF5DDCD00EA2F39 /* TransactionsService.swift in Sources */,
 				CE30B9D02DF5DDF300EA2F39 /* Transaction+CSV.swift in Sources */,
 				CE30B9CE2DF5DDE700EA2F39 /* Transaction+JSON.swift in Sources */,
 				CE8E23332E007242008800BA /* HistoryView.swift in Sources */,
+				CEA8DF2F2E0C27B500526E1C /* CurrencyManager.swift in Sources */,
+				CE58FADE2E0C7B3200F51E05 /* ShakeDetectorModifier.swift in Sources */,
 				CE16FA8F2E047F1200CB663F /* SortOption.swift in Sources */,
 				CE8E232D2E006B62008800BA /* MainTabView.swift in Sources */,
 				CE30B9CC2DF5DDD800EA2F39 /* TransactionsFileCache.swift in Sources */,
 				CE30B9C42DF5DDAA00EA2F39 /* Transaction.swift in Sources */,
+				CEF585462E0F2AA90049EB64 /* BalanceManager.swift in Sources */,
 				CE30B9C22DF5DD9B00EA2F39 /* BankAccount.swift in Sources */,
+				CEA8DF312E0C303A00526E1C /* CurrencySelectionView.swift in Sources */,
 				CE30B9BE2DF5DD8800EA2F39 /* Category.swift in Sources */,
+				CEF585442E0F21280049EB64 /* SpoilerView.swift in Sources */,
 				CE30B9C02DF5DD9200EA2F39 /* Direction.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

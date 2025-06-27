@@ -16,7 +16,7 @@ extension Transaction {
             print("❌ Expected 8 fields, received \(components.count)")
             return nil
         }
-
+        
         let idString = components[0].trimmingCharacters(in: .whitespaces)
         let accountIdString = components[1].trimmingCharacters(in: .whitespaces)
         let categoryIdString = components[2].trimmingCharacters(in: .whitespaces)
@@ -25,7 +25,7 @@ extension Transaction {
         let comment = components[5].trimmingCharacters(in: .whitespaces)
         let createdAtString = components[6].trimmingCharacters(in: .whitespaces)
         let updatedAtString = components[7].trimmingCharacters(in: .whitespaces)
-
+        
         guard let id = Int(idString),
               let accountId = Int(accountIdString),
               let categoryId = Int(categoryIdString),
@@ -35,7 +35,7 @@ extension Transaction {
               let updatedAt = ISO8601DateFormatter().date(from: updatedAtString) else {
             return nil
         }
-
+        
         return Transaction(
             id: id,
             accountId: accountId,
@@ -47,7 +47,7 @@ extension Transaction {
             updatedAt: updatedAt
         )
     }
-
+    
     var csvLine: String {
         let dateStr = ISO8601DateFormatter().string(from: transactionDate)
         let createdStr = ISO8601DateFormatter().string(from: createdAt)

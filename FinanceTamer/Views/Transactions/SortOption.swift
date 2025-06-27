@@ -10,6 +10,6 @@ import Foundation
 enum SortOption: String, CaseIterable, Identifiable {
     case byDate = "По дате"
     case byAmount = "По сумме"
-
+    
     var id: String { rawValue }
 }
