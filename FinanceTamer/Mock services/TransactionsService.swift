@@ -176,7 +176,95 @@ final class TransactionsService {
             comment: "Gift card for friend",
             createdAt: Date(),
             updatedAt: Date()
-        )
+        ),
+        
+        Transaction(
+                id: 17,
+                accountId: 1,
+                categoryId: 2,
+                amount: 850,
+                transactionDate: Date().addingTimeInterval(-86400 * 5), // 5 дней назад
+                comment: "Groceries at supermarket",
+                createdAt: Date().addingTimeInterval(-86400 * 5),
+                updatedAt: Date().addingTimeInterval(-86400 * 5)
+            ),
+            
+            Transaction(
+                id: 18,
+                accountId: 1,
+                categoryId: 5,
+                amount: 15_000,
+                transactionDate: Date().addingTimeInterval(-86400 * 10),
+                comment: "Freelance project: landing page",
+                createdAt: Date().addingTimeInterval(-86400 * 10),
+                updatedAt: Date().addingTimeInterval(-86400 * 10)
+            ),
+            
+            Transaction(
+                id: 19,
+                accountId: 1,
+                categoryId: 6,
+                amount: 290,
+                transactionDate: Date().addingTimeInterval(-86400 * 2),
+                comment: "Latte & croissant",
+                createdAt: Date().addingTimeInterval(-86400 * 2),
+                updatedAt: Date().addingTimeInterval(-86400 * 2)
+            ),
+            
+            Transaction(
+                id: 20,
+                accountId: 1,
+                categoryId: 10,
+                amount: 1200,
+                transactionDate: Date().addingTimeInterval(-86400 * 15),
+                comment: "Steam subscription",
+                createdAt: Date().addingTimeInterval(-86400 * 15),
+                updatedAt: Date().addingTimeInterval(-86400 * 15)
+            ),
+            
+            Transaction(
+                id: 21,
+                accountId: 1,
+                categoryId: 14,
+                amount: 5000,
+                transactionDate: Date().addingTimeInterval(-86400 * 3),
+                comment: "Quarterly bonus 🎉",
+                createdAt: Date().addingTimeInterval(-86400 * 3),
+                updatedAt: Date().addingTimeInterval(-86400 * 3)
+            ),
+            
+            Transaction(
+                id: 22,
+                accountId: 1,
+                categoryId: 12,
+                amount: 35000,
+                transactionDate: Date().addingTimeInterval(-86400 * 25),
+                comment: "June apartment rent",
+                createdAt: Date().addingTimeInterval(-86400 * 25),
+                updatedAt: Date().addingTimeInterval(-86400 * 25)
+            ),
+            
+            Transaction(
+                id: 23,
+                accountId: 1,
+                categoryId: 13,
+                amount: 2200,
+                transactionDate: Date().addingTimeInterval(-86400 * 6),
+                comment: "Pharmacy purchase",
+                createdAt: Date().addingTimeInterval(-86400 * 6),
+                updatedAt: Date().addingTimeInterval(-86400 * 6)
+            ),
+            
+            Transaction(
+                id: 24,
+                accountId: 1,
+                categoryId: 7,
+                amount: 7800,
+                transactionDate: Date().addingTimeInterval(-86400 * 4),
+                comment: "New sneakers 👟",
+                createdAt: Date().addingTimeInterval(-86400 * 4),
+                updatedAt: Date().addingTimeInterval(-86400 * 4)
+            )
         
     ]
     

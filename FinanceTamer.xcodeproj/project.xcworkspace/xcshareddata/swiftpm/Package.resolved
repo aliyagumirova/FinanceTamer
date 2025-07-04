@@ -1,0 +1,14 @@
+{
+  "pins" : [
+    {
+      "identity" : "ifrit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ukushu/Ifrit.git",
+      "state" : {
+        "branch" : "main",
+        "revision" : "5cb8badc28c7a4b7f59a05b8f0da37c363d25b6a"
+      }
+    }
+  ],
+  "version" : 2
+}
