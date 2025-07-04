@@ -49,4 +49,3 @@ struct Category: Identifiable, Codable {
         try container.encode(String(emoji), forKey: .emoji)
     }
 }
-

@@ -34,7 +34,7 @@ struct MainTabView: View {
                         Text("Счет")
                     }
                 
-                Text("Статьи")
+                CategoriesView()
                     .tabItem {
                         Image("Item")
                             .renderingMode(.template)

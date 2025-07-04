@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CE142DAA2E168E1E00BA8CC5 /* CategoriesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE142DA92E168E1E00BA8CC5 /* CategoriesView.swift */; };
+		CE142DAC2E168E7D00BA8CC5 /* CategoryRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE142DAB2E168E7D00BA8CC5 /* CategoryRow.swift */; };
 		CE16FA8F2E047F1200CB663F /* SortOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE16FA8E2E047F1200CB663F /* SortOption.swift */; };
 		CE30B9A32DF5DBB100EA2F39 /* FinanceTamerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE30B9A22DF5DBB100EA2F39 /* FinanceTamerApp.swift */; };
 		CE30B9A72DF5DBB500EA2F39 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CE30B9A62DF5DBB500EA2F39 /* Assets.xcassets */; };
@@ -46,6 +48,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		CE142DA92E168E1E00BA8CC5 /* CategoriesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesView.swift; sourceTree = "<group>"; };
+		CE142DAB2E168E7D00BA8CC5 /* CategoryRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryRow.swift; sourceTree = "<group>"; };
 		CE16FA8E2E047F1200CB663F /* SortOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortOption.swift; sourceTree = "<group>"; };
 		CE30B99F2DF5DBB100EA2F39 /* FinanceTamer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FinanceTamer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE30B9A22DF5DBB100EA2F39 /* FinanceTamerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinanceTamerApp.swift; sourceTree = "<group>"; };
@@ -95,6 +99,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		CE142DA82E168DFB00BA8CC5 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				CE142DA92E168E1E00BA8CC5 /* CategoriesView.swift */,
+				CE142DAB2E168E7D00BA8CC5 /* CategoryRow.swift */,
+			);
+			path = Categories;
+			sourceTree = "<group>";
+		};
 		CE30B9962DF5DBB100EA2F39 = {
 			isa = PBXGroup;
 			children = (
@@ -228,6 +241,7 @@
 			isa = PBXGroup;
 			children = (
 				CE8E232C2E006B61008800BA /* MainTabView.swift */,
+				CE142DA82E168DFB00BA8CC5 /* Categories */,
 				CE58FAE02E0C8CD400F51E05 /* Account */,
 				CE58FADF2E0C8CB300F51E05 /* Transactions */,
 			);
@@ -258,6 +272,8 @@
 			dependencies = (
 			);
 			name = FinanceTamer;
+			packageProductDependencies = (
+			);
 			productName = FinanceTamer;
 			productReference = CE30B99F2DF5DBB100EA2F39 /* FinanceTamer.app */;
 			productType = "com.apple.product-type.application";
@@ -308,6 +324,8 @@
 				Base,
 			);
 			mainGroup = CE30B9962DF5DBB100EA2F39;
+			packageReferences = (
+			);
 			productRefGroup = CE30B9A02DF5DBB100EA2F39 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -350,7 +368,9 @@
 				CE30B9C62DF5DDB800EA2F39 /* CategoriesService.swift in Sources */,
 				CE30B9CA2DF5DDCD00EA2F39 /* TransactionsService.swift in Sources */,
 				CE30B9D02DF5DDF300EA2F39 /* Transaction+CSV.swift in Sources */,
+				CE142DAA2E168E1E00BA8CC5 /* CategoriesView.swift in Sources */,
 				CE30B9CE2DF5DDE700EA2F39 /* Transaction+JSON.swift in Sources */,
+				CE142DAC2E168E7D00BA8CC5 /* CategoryRow.swift in Sources */,
 				CE8E23332E007242008800BA /* HistoryView.swift in Sources */,
 				CEA8DF2F2E0C27B500526E1C /* CurrencyManager.swift in Sources */,
 				CE58FADE2E0C7B3200F51E05 /* ShakeDetectorModifier.swift in Sources */,
