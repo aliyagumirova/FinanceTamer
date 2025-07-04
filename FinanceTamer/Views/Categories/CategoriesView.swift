@@ -22,7 +22,7 @@ struct CategoriesView: View {
                 let query = searchText.lowercased()
                 
                 if name.hasPrefix(query) {
-                    return true // Начинается с ввода → показываем сразу
+                    return true // Начинается с ввода, показываем сразу
                 }
                 
                 // иначе проверяем расстояние Левенштейна
@@ -60,7 +60,7 @@ struct CategoriesView: View {
         }
     }
     
-    // MARK: - Загрузка
+    // MARK: - Logic
     @MainActor
     private func loadCategories() async {
         do {
@@ -76,6 +76,7 @@ struct CategoriesView: View {
     CategoriesView()
 }
 
+// MARK: - Fuzzy search
 extension String {
     func levenshteinDistance(to target: String) -> Int {
         let source = Array(self.lowercased())

@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		CE142DAA2E168E1E00BA8CC5 /* CategoriesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE142DA92E168E1E00BA8CC5 /* CategoriesView.swift */; };
 		CE142DAC2E168E7D00BA8CC5 /* CategoryRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE142DAB2E168E7D00BA8CC5 /* CategoryRow.swift */; };
-		CE142DAF2E16A18000BA8CC5 /* Ifrit in Frameworks */ = {isa = PBXBuildFile; productRef = CE142DAE2E16A18000BA8CC5 /* Ifrit */; };
 		CE16FA8F2E047F1200CB663F /* SortOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE16FA8E2E047F1200CB663F /* SortOption.swift */; };
 		CE30B9A32DF5DBB100EA2F39 /* FinanceTamerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE30B9A22DF5DBB100EA2F39 /* FinanceTamerApp.swift */; };
 		CE30B9A72DF5DBB500EA2F39 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CE30B9A62DF5DBB500EA2F39 /* Assets.xcassets */; };
@@ -87,7 +86,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CE142DAF2E16A18000BA8CC5 /* Ifrit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -275,7 +273,6 @@
 			);
 			name = FinanceTamer;
 			packageProductDependencies = (
-				CE142DAE2E16A18000BA8CC5 /* Ifrit */,
 			);
 			productName = FinanceTamer;
 			productReference = CE30B99F2DF5DBB100EA2F39 /* FinanceTamer.app */;
@@ -328,7 +325,6 @@
 			);
 			mainGroup = CE30B9962DF5DBB100EA2F39;
 			packageReferences = (
-				CE142DAD2E16A18000BA8CC5 /* XCRemoteSwiftPackageReference "Ifrit" */,
 			);
 			productRefGroup = CE30B9A02DF5DBB100EA2F39 /* Products */;
 			projectDirPath = "";
@@ -653,25 +649,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		CE142DAD2E16A18000BA8CC5 /* XCRemoteSwiftPackageReference "Ifrit" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/ukushu/Ifrit.git";
-			requirement = {
-				branch = main;
-				kind = branch;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		CE142DAE2E16A18000BA8CC5 /* Ifrit */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = CE142DAD2E16A18000BA8CC5 /* XCRemoteSwiftPackageReference "Ifrit" */;
-			productName = Ifrit;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = CE30B9972DF5DBB100EA2F39 /* Project object */;
 }

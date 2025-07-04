@@ -67,7 +67,7 @@ struct TransactionsListView: View {
             .listRowBackground(Color.white)
             
             Section(header: Text("ОПЕРАЦИИ").font(.caption).foregroundColor(.gray)) {
-                ForEach(transactions) { transaction in
+                ForEach(transactions, id: \.id) { transaction in
                     TransactionRow(transaction: transaction)
                         .listRowBackground(Color.white)
                         .listRowInsets(EdgeInsets())

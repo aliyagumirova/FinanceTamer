@@ -35,7 +35,6 @@ struct HistoryView: View {
                     dateAndSummarySection
                     transactionListSection
                 }
-                .padding(.leading, -4)
                 .listStyle(.insetGrouped)
                 .scrollContentBackground(.hidden)
             }
