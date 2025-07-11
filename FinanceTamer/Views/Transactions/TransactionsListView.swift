@@ -16,12 +16,14 @@ struct TransactionsListView: View {
     
     @State private var showSortOptions = false
     @State private var sortOption: SortOption = .byDate
+    @State private var showCreateScreen = false
+    @State private var selectedTransaction: Transaction?
     
-    private let transactionsService = TransactionsService()
+    private let transactionsService = TransactionsService.shared
     private let categoriesService = CategoriesService()
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ZStack {
                 Color("BackgroundColor").ignoresSafeArea()
                 
@@ -38,6 +40,27 @@ struct TransactionsListView: View {
                 floatingAddButton
             }
         }
+        
+        .sheet(isPresented: $showCreateScreen) {
+            TransactionEditView(direction: direction, mode: .create)
+        }
+        
+        .sheet(item: $selectedTransaction) { transaction in
+            TransactionEditView(direction: direction, mode: .edit(transaction))
+        }
+        
+        .onChange(of: showCreateScreen) { isOpen in
+            if !isOpen {
+                Task { await loadTransactions() }
+            }
+        }
+        
+        .onChange(of: selectedTransaction) { selected in
+            if selected == nil {
+                Task { await loadTransactions() }
+            }
+        }
+        
         .confirmationDialog("Сортировать по:", isPresented: $showSortOptions, titleVisibility: .visible) {
             ForEach(SortOption.allCases) { option in
                 Button(option.rawValue) {
@@ -47,6 +70,7 @@ struct TransactionsListView: View {
             }
             Button("Отмена", role: .cancel) {}
         }
+        
         .task {
             await loadTransactions()
         }
@@ -69,6 +93,9 @@ struct TransactionsListView: View {
             Section(header: Text("ОПЕРАЦИИ").font(.caption).foregroundColor(.gray)) {
                 ForEach(transactions, id: \.id) { transaction in
                     TransactionRow(transaction: transaction)
+                        .onTapGesture {
+                            selectedTransaction = transaction
+                        }
                         .listRowBackground(Color.white)
                         .listRowInsets(EdgeInsets())
                 }
@@ -97,7 +124,7 @@ struct TransactionsListView: View {
             HStack {
                 Spacer()
                 Button(action: {
-                    // TODO: handle action
+                    showCreateScreen = true
                 }) {
                     Image(systemName: "plus")
                         .font(.system(size: 24, weight: .bold))
@@ -116,26 +143,46 @@ struct TransactionsListView: View {
     // MARK: - Logic
     
     private func loadTransactions() async {
-        let calendar = Calendar.current
-        let startOfDay = calendar.startOfDay(for: Date())
-        let endOfDay = calendar.date(bySettingHour: 23, minute: 59, second: 59, of: startOfDay)!
+        let calendar = Calendar(identifier: .gregorian)
+        var utcCalendar = calendar
+        utcCalendar.timeZone = TimeZone(secondsFromGMT: 0)!
+        
+        let now = Date()
+        let startOfDay = utcCalendar.startOfDay(for: now)
+        let endOfDay = utcCalendar.date(bySettingHour: 23, minute: 59, second: 59, of: startOfDay)!
+        
+        print("now (local):", now)
+        print("startOfDay (UTC):", startOfDay)
+        print("endOfDay (UTC):", endOfDay)
         
         do {
             let all = try await transactionsService.transactions(accountId: 1, from: startOfDay, to: endOfDay)
+            
+            print("Всего операций за сегодня: \(all.count)")
+            for t in all {
+                print("• \(t.id) | \(t.amount) | \(t.transactionDate) | catId: \(t.categoryId)")
+            }
+            
             let filteredCategories = try await categoriesService.categories(for: direction)
             let categoryIds = Set(filteredCategories.map { $0.id })
             
+            print("Категории для direction \(direction):", filteredCategories.map { "\($0.id)" })
+            
             let filtered = all.filter { categoryIds.contains($0.categoryId) }
             
+            print("Отфильтрованные транзакции: \(filtered.count) шт.")
+            
             DispatchQueue.main.async {
-                transactions = filtered
-                totalAmount = transactions.reduce(0) { $0 + $1.amount }
+                self.transactions = filtered
+                self.totalAmount = filtered.reduce(0) { $0 + $1.amount }
                 applySort()
             }
         } catch {
-            print("Ошибка загрузки: \(error)")
+            print("Ошибка загрузки транзакций: \(error)")
         }
     }
+    
+    
     
     private func applySort() {
         switch sortOption {
