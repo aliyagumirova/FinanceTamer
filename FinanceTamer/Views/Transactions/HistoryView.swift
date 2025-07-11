@@ -4,6 +4,7 @@
 //
 //  Created by Aliia Gumirova on 19.06.2025.
 //
+import SwiftUI
 
 import SwiftUI
 
@@ -20,10 +21,12 @@ struct HistoryView: View {
     
     @State private var showSortOptions = false
     @State private var sortOption: SortOption = .byDate
+    @State private var showAnalysis = false
+    @State private var selectedTransaction: Transaction?
     
     @Environment(\.dismiss) private var dismiss
     
-    private let transactionsService = TransactionsService()
+    private let transactionsService = TransactionsService.shared
     private let categoriesService = CategoriesService()
     
     var body: some View {
@@ -45,18 +48,31 @@ struct HistoryView: View {
                 ToolbarItem(placement: .navigationBarTrailing) { topActions }
             }
             .navigationBarBackButtonHidden(true)
-        }
-        .confirmationDialog("Сортировать по:", isPresented: $showSortOptions, titleVisibility: .visible) {
-            ForEach(SortOption.allCases) { option in
-                Button(option.rawValue) {
-                    sortOption = option
-                    applySort()
+            .confirmationDialog("Сортировать по:", isPresented: $showSortOptions, titleVisibility: .visible) {
+                ForEach(SortOption.allCases) { option in
+                    Button(option.rawValue) {
+                        sortOption = option
+                        applySort()
+                    }
+                }
+                Button("Отмена", role: .cancel) {}
+            }
+            .onAppear {
+                Task { await loadTransactions() }
+            }
+            .navigationDestination(isPresented: $showAnalysis) {
+                AnalysisViewWrapper(direction: direction)
+            }
+            
+            .sheet(item: $selectedTransaction) { transaction in
+                TransactionEditView(direction: direction, mode: .edit(transaction))
+            }
+            .onChange(of: selectedTransaction) { newValue in
+                if newValue == nil {
+                    Task { await loadTransactions() }
                 }
             }
-            Button("Отмена", role: .cancel) {}
-        }
-        .onAppear {
-            Task { await loadTransactions() }
+            
         }
     }
     
@@ -80,11 +96,15 @@ struct HistoryView: View {
         Section(header: Text("ОПЕРАЦИИ").font(.caption).foregroundColor(.gray)) {
             ForEach(transactions, id: \.id) { transaction in
                 TransactionRow(transaction: transaction)
+                    .onTapGesture {
+                        selectedTransaction = transaction
+                    }
                     .listRowBackground(Color.white)
                     .listRowInsets(EdgeInsets())
             }
         }
     }
+    
     
     private func datePickerRow(title: String, selection: Binding<Date>, isStart: Bool) -> some View {
         HStack {
@@ -98,8 +118,8 @@ struct HistoryView: View {
             )
             .labelsHidden()
             .accentColor(Color("AccentColor"))
-            .background(Color.accentColor.opacity(0.12))
-            .clipShape(RoundedRectangle(cornerRadius: 8))
+//            .background(Color.accentColor.opacity(0.12))
+//            .clipShape(RoundedRectangle(cornerRadius: 8))
             .environment(\.locale, Locale(identifier: "ru_RU"))
             .onChange(of: selection.wrappedValue) {
                 if isStart && selection.wrappedValue > endDate {
@@ -111,7 +131,6 @@ struct HistoryView: View {
             }
         }
     }
-    
     
     private var backButton: some View {
         Button(action: { dismiss() }) {
@@ -130,9 +149,9 @@ struct HistoryView: View {
                 Image(systemName: "arrow.up.arrow.down")
                     .foregroundColor(Color("ClockColor"))
             }
-            Button(action: {
-                // TODO: Export
-            }) {
+            Button {
+                showAnalysis = true
+            } label: {
                 Image(systemName: "doc")
                     .foregroundColor(Color("ClockColor"))
             }
@@ -149,9 +168,7 @@ struct HistoryView: View {
         do {
             let all = try await transactionsService.transactions(accountId: 1, from: dayStart, to: dayEnd)
             let ids = try await categoriesService.categories(for: direction).map(\.id)
-            
             let filtered = all.filter { ids.contains($0.categoryId) }
-            
             rawTransactions = filtered
             applySort()
         } catch {
@@ -161,14 +178,12 @@ struct HistoryView: View {
     
     private func applySort() {
         var sorted = rawTransactions
-        
         switch sortOption {
         case .byDate:
             sorted.sort { $0.transactionDate > $1.transactionDate }
         case .byAmount:
             sorted.sort { $0.amount > $1.amount }
         }
-        
         transactions = sorted
         totalAmount = sorted.reduce(0) { $0 + $1.amount }
     }

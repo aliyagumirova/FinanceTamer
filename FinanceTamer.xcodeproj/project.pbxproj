@@ -33,6 +33,10 @@
 		CEA8DF312E0C303A00526E1C /* CurrencySelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA8DF302E0C303A00526E1C /* CurrencySelectionView.swift */; };
 		CEBECBF32DFB076700DD2B8B /* FTTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEBECBF22DFB076700DD2B8B /* FTTests.swift */; };
 		CEBECBF92DFB077600DD2B8B /* TransactionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE30B9D32DF5DE0B00EA2F39 /* TransactionTests.swift */; };
+		CEC9D4042E219A0800A72348 /* UIViewControllerRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC9D4032E219A0800A72348 /* UIViewControllerRepresentable.swift */; };
+		CEC9D4062E219ACA00A72348 /* AnalysisViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC9D4052E219ACA00A72348 /* AnalysisViewController.swift */; };
+		CEC9D4082E219BA100A72348 /* TransactionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC9D4072E219BA100A72348 /* TransactionCell.swift */; };
+		CEC9D40A2E21B59700A72348 /* TransactionEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC9D4092E21B59700A72348 /* TransactionEditView.swift */; };
 		CEF585442E0F21280049EB64 /* SpoilerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF585432E0F21270049EB64 /* SpoilerView.swift */; };
 		CEF585462E0F2AA90049EB64 /* BalanceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF585452E0F2AA90049EB64 /* BalanceManager.swift */; };
 /* End PBXBuildFile section */
@@ -77,6 +81,10 @@
 		CEBECBF02DFB076700DD2B8B /* FTTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FTTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CEBECBF22DFB076700DD2B8B /* FTTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FTTests.swift; sourceTree = "<group>"; };
 		CEBECBFA2DFB080200DD2B8B /* FinanceTamer.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = FinanceTamer.xctestplan; sourceTree = "<group>"; };
+		CEC9D4032E219A0800A72348 /* UIViewControllerRepresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewControllerRepresentable.swift; sourceTree = "<group>"; };
+		CEC9D4052E219ACA00A72348 /* AnalysisViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalysisViewController.swift; sourceTree = "<group>"; };
+		CEC9D4072E219BA100A72348 /* TransactionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionCell.swift; sourceTree = "<group>"; };
+		CEC9D4092E21B59700A72348 /* TransactionEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionEditView.swift; sourceTree = "<group>"; };
 		CEF585432E0F21270049EB64 /* SpoilerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpoilerView.swift; sourceTree = "<group>"; };
 		CEF585452E0F2AA90049EB64 /* BalanceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -206,6 +214,9 @@
 				CE8E23322E007242008800BA /* HistoryView.swift */,
 				CE8E23302E006DE5008800BA /* TransactionRow.swift */,
 				CE8E232E2E006DC8008800BA /* TransactionsListView.swift */,
+				CEC9D4052E219ACA00A72348 /* AnalysisViewController.swift */,
+				CEC9D4072E219BA100A72348 /* TransactionCell.swift */,
+				CEC9D4092E21B59700A72348 /* TransactionEditView.swift */,
 			);
 			path = Transactions;
 			sourceTree = "<group>";
@@ -244,6 +255,7 @@
 				CE142DA82E168DFB00BA8CC5 /* Categories */,
 				CE58FAE02E0C8CD400F51E05 /* Account */,
 				CE58FADF2E0C8CB300F51E05 /* Transactions */,
+				CEC9D4032E219A0800A72348 /* UIViewControllerRepresentable.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -365,11 +377,13 @@
 				CE30B9C82DF5DDC300EA2F39 /* BankAccountsService.swift in Sources */,
 				CEA8DF2D2E0C24C600526E1C /* AccountView.swift in Sources */,
 				CE30B9A32DF5DBB100EA2F39 /* FinanceTamerApp.swift in Sources */,
+				CEC9D4082E219BA100A72348 /* TransactionCell.swift in Sources */,
 				CE30B9C62DF5DDB800EA2F39 /* CategoriesService.swift in Sources */,
 				CE30B9CA2DF5DDCD00EA2F39 /* TransactionsService.swift in Sources */,
 				CE30B9D02DF5DDF300EA2F39 /* Transaction+CSV.swift in Sources */,
 				CE142DAA2E168E1E00BA8CC5 /* CategoriesView.swift in Sources */,
 				CE30B9CE2DF5DDE700EA2F39 /* Transaction+JSON.swift in Sources */,
+				CEC9D40A2E21B59700A72348 /* TransactionEditView.swift in Sources */,
 				CE142DAC2E168E7D00BA8CC5 /* CategoryRow.swift in Sources */,
 				CE8E23332E007242008800BA /* HistoryView.swift in Sources */,
 				CEA8DF2F2E0C27B500526E1C /* CurrencyManager.swift in Sources */,
@@ -380,7 +394,9 @@
 				CE30B9C42DF5DDAA00EA2F39 /* Transaction.swift in Sources */,
 				CEF585462E0F2AA90049EB64 /* BalanceManager.swift in Sources */,
 				CE30B9C22DF5DD9B00EA2F39 /* BankAccount.swift in Sources */,
+				CEC9D4062E219ACA00A72348 /* AnalysisViewController.swift in Sources */,
 				CEA8DF312E0C303A00526E1C /* CurrencySelectionView.swift in Sources */,
+				CEC9D4042E219A0800A72348 /* UIViewControllerRepresentable.swift in Sources */,
 				CE30B9BE2DF5DD8800EA2F39 /* Category.swift in Sources */,
 				CEF585442E0F21280049EB64 /* SpoilerView.swift in Sources */,
 				CE30B9C02DF5DD9200EA2F39 /* Direction.swift in Sources */,

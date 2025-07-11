@@ -9,274 +9,73 @@ import Foundation
 
 final class TransactionsService {
     
-    private var nextId: Int = 3
+    static let shared = TransactionsService() // ✅ Синглтон
+    
+    private init() {} // запрет на создание извне
+    
+    private var nextId: Int = 5
     
     private var transactions: [Transaction] = [
         Transaction(
+            id: 1,
+            accountId: 1,
+            categoryId: 3,
+            amount: 300,
+            transactionDate: Date().addingTimeInterval(-86400 * 20),
+            comment: "Gift from grandma",
+            createdAt: Date().addingTimeInterval(-86400 * 20),
+            updatedAt: Date().addingTimeInterval(-86400 * 20)
+        ),
+        Transaction(
+            id: 2,
+            accountId: 1,
+            categoryId: 2,
+            amount: 850.50,
+            transactionDate: Date().addingTimeInterval(-86400 * 10),
+            comment: "Groceries at supermarket",
+            createdAt: Date().addingTimeInterval(-86400 * 10),
+            updatedAt: Date().addingTimeInterval(-86400 * 10)
+        ),
+        
+        Transaction(
             id: 3,
             accountId: 1,
-            categoryId: 1,
-            amount: 120_000,
-            transactionDate: Date().addingTimeInterval(-86400 * 30), // 30 дней назад → 18 мая 2025
-            comment: "Salary for May",
-            createdAt: Date().addingTimeInterval(-86400 * 30),        // 18 мая 2025
-            updatedAt: Date().addingTimeInterval(-86400 * 30)
+            categoryId: 2,
+            amount: 850.50,
+            transactionDate: Date(),
+            comment: "Groceries at supermarket",
+            createdAt: Date(),
+            updatedAt: Date()
         ),
         
         Transaction(
             id: 4,
             accountId: 1,
             categoryId: 3,
-            amount: 300,
-            transactionDate: Date().addingTimeInterval(-86400 * 20), // 28 мая 2025
-            comment: "Gift from grandma",
-            createdAt: Date().addingTimeInterval(-86400 * 20),        // 28 мая 2025
-            updatedAt: Date().addingTimeInterval(-86400 * 20)
-        ),
-        
-        Transaction(
-            id: 5,
-            accountId: 1,
-            categoryId: 2,
-            amount: 850.50,
-            transactionDate: Date().addingTimeInterval(-86400 * 10), // 7 июня 2025
-            comment: "Groceries at supermarket",
-            createdAt: Date().addingTimeInterval(-86400 * 10),        // 7 июня 2025
-            updatedAt: Date().addingTimeInterval(-86400 * 10)
-        ),
-        
-        Transaction(
-            id: 6,
-            accountId: 1,
-            categoryId: 4,
             amount: 49.00,
-            transactionDate: Date().addingTimeInterval(-86400 * 5), // 12 июня 2025
+            transactionDate: Date(),
             comment: "Bus fare",
-            createdAt: Date().addingTimeInterval(-86400 * 5),        // 12 июня 2025
-            updatedAt: Date().addingTimeInterval(-86400 * 5)
-        ),
-        
-        Transaction(
-            id: 7,
-            accountId: 1,
-            categoryId: 2,
-            amount: 2_399.99,
-            transactionDate: Date().addingTimeInterval(-86400 * 3), // 14 июня 2025
-            comment: "Dinner with friends",
-            createdAt: Date().addingTimeInterval(-86400 * 3),        // 14 июня 2025
-            updatedAt: Date().addingTimeInterval(-86400 * 3)
-        ),
-        
-        Transaction(
-            id: 8,
-            accountId: 1,
-            categoryId: 4,
-            amount: 1_500.00,
-            transactionDate: Date().addingTimeInterval(-86400 * 7), // 10 июня 2025
-            comment: "Taxi from airport",
-            createdAt: Date().addingTimeInterval(-86400 * 7),        // 10 июня 2025
-            updatedAt: Date().addingTimeInterval(-86400 * 7)
-        ),
-        
-        Transaction(
-            id: 9,
-            accountId: 1,
-            categoryId: 1,
-            amount: 115_000,
-            transactionDate: Date().addingTimeInterval(-86400 * 60), // 18 апреля 2025
-            comment: "April salary",
-            createdAt: Date().addingTimeInterval(-86400 * 60),        // 18 апреля 2025
-            updatedAt: Date().addingTimeInterval(-86400 * 60)
-        ),
-        
-        Transaction(
-            id: 10,
-            accountId: 1,
-            categoryId: 3,
-            amount: 2_000,
-            transactionDate: Date().addingTimeInterval(-86400 * 2), // 15 июня 2025
-            comment: "Birthday envelope",
-            createdAt: Date().addingTimeInterval(-86400 * 2),        // 15 июня 2025
-            updatedAt: Date().addingTimeInterval(-86400 * 2)
-        ),
-        
-        Transaction(
-            id: 11,
-            accountId: 1,
-            categoryId: 2,
-            amount: 399.90,
-            transactionDate: Date().addingTimeInterval(-86400), // 16 июня 2025
-            comment: "Lunch at bistro",
-            createdAt: Date().addingTimeInterval(-86400),        // 16 июня 2025
-            updatedAt: Date().addingTimeInterval(-86400)
-        ),
-        
-        Transaction(
-            id: 12,
-            accountId: 1,
-            categoryId: 4,
-            amount: 3_200.0,
-            transactionDate: Date(), // 17 июня 2025
-            comment: "Очень длинный комментарий",
-            createdAt: Date(),       // 17 июня 2025
-            updatedAt: Date()
-        ),
-        
-        
-        Transaction(
-            id: 13,
-            accountId: 1,
-            categoryId: 3,
-            amount: 300,
-            transactionDate: Date(), // 28 мая 2025
-            comment: "Gift from husband",
-            createdAt: Date(),        // 28 мая 2025
-            updatedAt: Date()
-        ),
-        
-        Transaction(
-            id: 13,
-            accountId: 1,
-            categoryId: 2,                       // Food 🍔
-            amount: 549.90,
-            transactionDate: Date(),             // сегодня
-            comment: "Groceries at local market",
-            createdAt: Date(),                   // сегодня
-            updatedAt: Date()
-        ),
-        
-        Transaction(
-            id: 14,
-            accountId: 1,
-            categoryId: 4,                       // Transport 🚌
-            amount: 120.00,
-            transactionDate: Date(),             // сегодня
-            comment: "Metro rides",
             createdAt: Date(),
             updatedAt: Date()
-        ),
-        
-        Transaction(
-            id: 15,
-            accountId: 1,
-            categoryId: 1,                       // Salary 💰
-            amount: 80_000,
-            transactionDate: Date(),             // сегодня
-            comment: "Part-time project payment",
-            createdAt: Date(),
-            updatedAt: Date()
-        ),
-        
-        Transaction(
-            id: 16,
-            accountId: 1,
-            categoryId: 3,                       // Gifts 🎁
-            amount: 2_500,
-            transactionDate: Date(),             // сегодня
-            comment: "Gift card for friend",
-            createdAt: Date(),
-            updatedAt: Date()
-        ),
-        
-        Transaction(
-                id: 17,
-                accountId: 1,
-                categoryId: 2,
-                amount: 850,
-                transactionDate: Date().addingTimeInterval(-86400 * 5), // 5 дней назад
-                comment: "Groceries at supermarket",
-                createdAt: Date().addingTimeInterval(-86400 * 5),
-                updatedAt: Date().addingTimeInterval(-86400 * 5)
-            ),
-            
-            Transaction(
-                id: 18,
-                accountId: 1,
-                categoryId: 5,
-                amount: 15_000,
-                transactionDate: Date().addingTimeInterval(-86400 * 10),
-                comment: "Freelance project: landing page",
-                createdAt: Date().addingTimeInterval(-86400 * 10),
-                updatedAt: Date().addingTimeInterval(-86400 * 10)
-            ),
-            
-            Transaction(
-                id: 19,
-                accountId: 1,
-                categoryId: 6,
-                amount: 290,
-                transactionDate: Date().addingTimeInterval(-86400 * 2),
-                comment: "Latte & croissant",
-                createdAt: Date().addingTimeInterval(-86400 * 2),
-                updatedAt: Date().addingTimeInterval(-86400 * 2)
-            ),
-            
-            Transaction(
-                id: 20,
-                accountId: 1,
-                categoryId: 10,
-                amount: 1200,
-                transactionDate: Date().addingTimeInterval(-86400 * 15),
-                comment: "Steam subscription",
-                createdAt: Date().addingTimeInterval(-86400 * 15),
-                updatedAt: Date().addingTimeInterval(-86400 * 15)
-            ),
-            
-            Transaction(
-                id: 21,
-                accountId: 1,
-                categoryId: 14,
-                amount: 5000,
-                transactionDate: Date().addingTimeInterval(-86400 * 3),
-                comment: "Quarterly bonus 🎉",
-                createdAt: Date().addingTimeInterval(-86400 * 3),
-                updatedAt: Date().addingTimeInterval(-86400 * 3)
-            ),
-            
-            Transaction(
-                id: 22,
-                accountId: 1,
-                categoryId: 12,
-                amount: 35000,
-                transactionDate: Date().addingTimeInterval(-86400 * 25),
-                comment: "June apartment rent",
-                createdAt: Date().addingTimeInterval(-86400 * 25),
-                updatedAt: Date().addingTimeInterval(-86400 * 25)
-            ),
-            
-            Transaction(
-                id: 23,
-                accountId: 1,
-                categoryId: 13,
-                amount: 2200,
-                transactionDate: Date().addingTimeInterval(-86400 * 6),
-                comment: "Pharmacy purchase",
-                createdAt: Date().addingTimeInterval(-86400 * 6),
-                updatedAt: Date().addingTimeInterval(-86400 * 6)
-            ),
-            
-            Transaction(
-                id: 24,
-                accountId: 1,
-                categoryId: 7,
-                amount: 7800,
-                transactionDate: Date().addingTimeInterval(-86400 * 4),
-                comment: "New sneakers 👟",
-                createdAt: Date().addingTimeInterval(-86400 * 4),
-                updatedAt: Date().addingTimeInterval(-86400 * 4)
-            )
-        
+        )
     ]
     
+    // MARK: - Получение транзакций по периоду
     func transactions(accountId: Int, from startDate: Date, to endDate: Date) async throws -> [Transaction] {
-        return transactions.filter {
+        let all = transactions.filter {
             $0.accountId == accountId &&
             $0.transactionDate >= startDate &&
             $0.transactionDate <= endDate
         }
+        
+        print("🗂️ Всего операций за сегодня: \(transactions.count)")
+        for t in transactions {
+            print("• \(t.id) | \(t.amount) | \(t.transactionDate) | catId: \(t.categoryId)")
+        }
+        return all
     }
     
-    
+    // MARK: - Создание
     func create(accountId: Int, categoryId: Int, amount: Decimal, transactionDate: Date, comment: String) async throws -> Transaction {
         let now = Date()
         let transaction = Transaction(
@@ -290,11 +89,12 @@ final class TransactionsService {
             updatedAt: now
         )
         transactions.append(transaction)
+        print("✅ [TransactionsService] Транзакция создана: id \(transaction.id)")
         nextId += 1
         return transaction
     }
     
-    
+    // MARK: - Обновление
     func update(_ transaction: Transaction) async throws -> Transaction? {
         if let index = transactions.firstIndex(where: { $0.id == transaction.id }) {
             let updatedTransaction = Transaction(
@@ -308,17 +108,20 @@ final class TransactionsService {
                 updatedAt: Date()
             )
             transactions[index] = updatedTransaction
+            print("✏️ [TransactionsService] Транзакция обновлена: id \(transaction.id)")
             return updatedTransaction
+        } else {
+            print("⚠️ [TransactionsService] Не найдено для обновления: id \(transaction.id)")
+            return nil
         }
-        return nil
     }
     
-    
+    // MARK: - Удаление
     func delete(id: Int) async throws -> Bool {
         let originalCount = transactions.count
         transactions.removeAll { $0.id == id }
-        return transactions.count < originalCount
+        let deleted = transactions.count < originalCount
+        print(deleted ? "🗑️ Удалена транзакция id: \(id)" : "⚠️ Не найдена для удаления: id \(id)")
+        return deleted
     }
-    
 }
-
