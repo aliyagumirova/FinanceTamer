@@ -13,28 +13,27 @@ struct AccountView: View {
     @State private var editedBalance = ""
     @State private var showCurrencySheet = false
     @State private var isBalanceHidden = false
-    
+
     @FocusState private var isBalanceFieldFocused: Bool
-    
+
     @StateObject private var currencyManager = CurrencyManager.shared
-    @StateObject private var balanceManager = BalanceManager.shared
-    
-    
-    private let bankAccountsService = BankAccountsService()
-    
+    private let bankAccountsService = BankAccountsNetworkService.shared
+
+    @State private var isLoading = false
+    @State private var showError = false
+    @State private var errorMessage = ""
+
     var body: some View {
         NavigationView {
             ZStack {
                 Color("BackgroundColor").ignoresSafeArea()
-                
+
                 ScrollView {
                     VStack(spacing: 16) {
                         headerView
                         balanceRow
                         currencyRow
-                        
-                        Spacer()
-                            .frame(height: 200)
+                        Spacer().frame(height: 200)
                     }
                     .padding(.horizontal)
                     .padding(.top, 20)
@@ -43,7 +42,17 @@ struct AccountView: View {
                 .refreshable {
                     if !editing {
                         await loadAccount()
-                        print("refreshed")
+                        print("🔄 Refreshed")
+                    }
+                }
+
+                if isLoading {
+                    ZStack {
+                        Color.black.opacity(0.1).ignoresSafeArea()
+                        ProgressView("Загрузка...")
+                            .padding()
+                            .background(Color.white)
+                            .cornerRadius(12)
                     }
                 }
             }
@@ -65,6 +74,14 @@ struct AccountView: View {
                     .foregroundColor(Color("ClockColor"))
                 }
             }
+            .alert("Не удалось загрузить данные", isPresented: $showError) {
+                Button("Повторить") {
+                    Task { await loadAccount() }
+                }
+                Button("Отмена", role: .cancel) {}
+            } message: {
+                Text(errorMessage)
+            }
             .overlay(
                 Group {
                     if showCurrencySheet {
@@ -76,7 +93,7 @@ struct AccountView: View {
                                         showCurrencySheet = false
                                     }
                                 }
-                            
+
                             CurrencySelectionView(
                                 selectedCurrency: $currencyManager.selectedCurrency,
                                 isPresented: $showCurrencySheet
@@ -91,26 +108,32 @@ struct AccountView: View {
             .task {
                 await loadAccount()
             }
+            .onAppear {
+                Task {
+                    await loadAccount()
+                }
+            }
         }
     }
-    
+
     // MARK: - Subviews
+
     private var headerView: some View {
         EmptyView()
     }
-    
+
     private var balanceRow: some View {
         VStack(spacing: 4) {
             HStack {
                 HStack(spacing: 8) {
-                    Text("\u{1F4B0}")
+                    Text("💰")
                     Text("Баланс")
                         .font(.system(size: 17))
                         .foregroundColor(.primary)
                 }
-                
+
                 Spacer()
-                
+
                 if editing {
                     TextField("0", text: $editedBalance)
                         .keyboardType(.decimalPad)
@@ -122,7 +145,7 @@ struct AccountView: View {
                         .spoiler(isOn: $isBalanceHidden)
                 }
             }
-            
+
             if editing {
                 HStack {
                     Spacer()
@@ -136,14 +159,12 @@ struct AccountView: View {
                 }
             }
         }
-        
         .frame(height: editing ? 70 : 44)
         .padding(.horizontal, 16)
         .background(editing ? Color.white : Color("AccentColor"))
         .cornerRadius(10)
     }
-    
-    
+
     private var currencyRow: some View {
         Button(action: {
             if editing {
@@ -154,12 +175,12 @@ struct AccountView: View {
                 Text("Валюта")
                     .font(.system(size: 17))
                     .foregroundColor(.primary)
-                
+
                 Spacer()
-                
+
                 Text(currencyManager.selectedCurrency)
                     .foregroundColor(.black)
-                
+
                 if editing {
                     Image(systemName: "chevron.right")
                         .foregroundColor(Color("ArrowColor"))
@@ -173,62 +194,84 @@ struct AccountView: View {
         }
         .disabled(!editing)
     }
-    
-    
+
     // MARK: - Logic
+
     private var formattedBalance: String {
-        "\(balanceManager.balance.formatted()) \(currencyManager.selectedCurrency)"
+        guard let account = account else { return "–" }
+        return "\(account.balance) \(currencyManager.selectedCurrency)"
     }
-    
+
     @MainActor
     private func loadAccount() async {
+        isLoading = true
+        defer { isLoading = false }
+
         do {
-            let result = try await bankAccountsService.accountForUser(userId: 1)
-            account = result
-            
-            if UserDefaults.standard.string(forKey: "accountBalance") == nil {
-                balanceManager.balance = result.balance
+            print("📱 Загружаем счёт...")
+            let accounts = try await bankAccountsService.loadAccounts()
+
+            guard let result = accounts.first else {
+                throw NSError(domain: "AccountView", code: -1, userInfo: [NSLocalizedDescriptionKey: "Список аккаунтов пуст"])
             }
-            
-            if UserDefaults.standard.string(forKey: "selectedCurrency") == nil {
-                currencyManager.selectedCurrency = result.currency
-            }
-            
-            editedBalance = "\(balanceManager.balance)"
-            
+
+            self.account = result
+            self.editedBalance = result.balance
+            self.currencyManager.selectedCurrency = result.currency
+
         } catch {
-            print("Ошибка загрузки счёта: \(error)")
+            await handleError(error)
         }
     }
-    
-    
+
     private func saveChanges() {
-        if let value = Decimal(string: editedBalance) {
-            balanceManager.balance = value
+        guard let account = account else { return }
+
+        Task {
+            isLoading = true
+            defer { isLoading = false }
+
+            let result = await bankAccountsService.updateAccount(
+                id: account.id,
+                name: account.name,
+                balance: editedBalance,
+                currency: currencyManager.selectedCurrency
+            )
+
+            switch result {
+            case .success(let updated):
+                self.account = updated
+                self.editedBalance = updated.balance
+                self.currencyManager.selectedCurrency = updated.currency
+
+                UserDefaults.standard.set(updated.balance, forKey: "accountBalance")
+                UserDefaults.standard.set(updated.currency, forKey: "selectedCurrency")
+
+            case .failure(let error):
+                await handleError(error)
+            }
         }
     }
-    
-    
+
+
+    @MainActor
+    private func handleError(_ error: Error) {
+        errorMessage = error.localizedDescription
+        showError = true
+    }
+
     private func sanitizedBalance(from text: String) -> String {
-        // Оставляем только цифры и запятую/точку
         let allowedCharacters = CharacterSet(charactersIn: "0123456789.,")
         let filtered = text.unicodeScalars.filter { allowedCharacters.contains($0) }
         var cleaned = String(String.UnicodeScalarView(filtered))
-            .replacingOccurrences(of: ",", with: ".") // Заменяем запятую на точку
-        
-        // Убираем все точки, кроме первой
+            .replacingOccurrences(of: ",", with: ".")
+
         if let firstDotRange = cleaned.range(of: ".") {
             let beforeDot = cleaned[..<firstDotRange.upperBound]
             let afterDot = cleaned[firstDotRange.upperBound...].replacingOccurrences(of: ".", with: "")
             cleaned = String(beforeDot + afterDot)
         }
-        
+
         return cleaned
     }
-    
-    
-}
-
-#Preview {
-    AccountView()
 }
