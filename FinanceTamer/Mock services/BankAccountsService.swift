@@ -12,8 +12,8 @@ final class BankAccountsService {
     private var account: BankAccount = BankAccount(
         id: 1,
         userId: 1,
-        name: "Main accaunt",
-        balance: 10_000.00,
+        name: "Main account",
+        balance: "10000.00",
         currency: "₽",
         createdAt: Date(),
         updatedAt: Date()
@@ -23,10 +23,15 @@ final class BankAccountsService {
         return account
     }
     
-    func updateAccount(id: Int, name: String, balance: Decimal, currency: String) async throws -> BankAccount {
+    func updateAccount(id: Int, name: String, balance: String, currency: String) async throws -> BankAccount {
         guard id == account.id else {
-            throw NSError(domain: "BankAccountsService", code: 404, userInfo: [NSLocalizedDescriptionKey: "Account not found"])
+            throw NSError(
+                domain: "BankAccountsService",
+                code: 404,
+                userInfo: [NSLocalizedDescriptionKey: "Account not found"]
+            )
         }
+        
         account = BankAccount(
             id: id,
             userId: account.userId,
@@ -39,7 +44,4 @@ final class BankAccountsService {
         
         return account
     }
-    
-    
 }
-

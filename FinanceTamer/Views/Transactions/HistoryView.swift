@@ -6,33 +6,31 @@
 //
 import SwiftUI
 
-import SwiftUI
-
 struct HistoryView: View {
     let direction: Direction
-    
+
     @State private var startDate: Date = Calendar.current.date(byAdding: .month, value: -1, to: Date()) ?? Date()
     @State private var endDate: Date = Date()
-    
-    @State private var rawTransactions: [Transaction] = []
+
     @State private var transactions: [Transaction] = []
     @State private var totalAmount: Decimal = 0
     @ObservedObject private var currency = CurrencyManager.shared
-    
+
     @State private var showSortOptions = false
     @State private var sortOption: SortOption = .byDate
     @State private var showAnalysis = false
     @State private var selectedTransaction: Transaction?
-    
+
+    @State private var isLoading = false
+    @State private var showError = false
+    @State private var errorMessage = ""
+
     @Environment(\.dismiss) private var dismiss
-    
-    private let transactionsService = TransactionsService.shared
-    private let categoriesService = CategoriesService()
-    
+
     var body: some View {
         ZStack {
             Color("BackgroundColor").ignoresSafeArea()
-            
+
             VStack {
                 List {
                     dateAndSummarySection
@@ -42,7 +40,6 @@ struct HistoryView: View {
                 .scrollContentBackground(.hidden)
             }
             .navigationTitle("Моя история")
-            .background(Color("BackgroundColor"))
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) { backButton }
                 ToolbarItem(placement: .navigationBarTrailing) { topActions }
@@ -57,13 +54,9 @@ struct HistoryView: View {
                 }
                 Button("Отмена", role: .cancel) {}
             }
-            .onAppear {
-                Task { await loadTransactions() }
-            }
             .navigationDestination(isPresented: $showAnalysis) {
                 AnalysisViewWrapper(direction: direction)
             }
-            
             .sheet(item: $selectedTransaction) { transaction in
                 TransactionEditView(direction: direction, mode: .edit(transaction))
             }
@@ -72,17 +65,35 @@ struct HistoryView: View {
                     Task { await loadTransactions() }
                 }
             }
-            
+            .task {
+                await loadTransactions()
+            }
+
+            if isLoading {
+                ZStack {
+                    Color.black.opacity(0.1).ignoresSafeArea()
+                    ProgressView("Загрузка...")
+                        .padding()
+                        .background(Color.white)
+                        .cornerRadius(12)
+                }
+            }
+        }
+        .alert("Не удалось загрузить данные", isPresented: $showError) {
+            Button("Повторить") {
+                Task { await loadTransactions() }
+            }
+            Button("Отмена", role: .cancel) {}
+        } message: {
+            Text(errorMessage)
         }
     }
-    
-    // MARK: - Subviews
-    
+
     private var dateAndSummarySection: some View {
         Section {
             datePickerRow(title: "Начало", selection: $startDate, isStart: true)
             datePickerRow(title: "Конец", selection: $endDate, isStart: false)
-            
+
             HStack {
                 Text("Сумма")
                 Spacer()
@@ -91,7 +102,7 @@ struct HistoryView: View {
         }
         .listRowBackground(Color.white)
     }
-    
+
     private var transactionListSection: some View {
         Section(header: Text("ОПЕРАЦИИ").font(.caption).foregroundColor(.gray)) {
             ForEach(transactions, id: \.id) { transaction in
@@ -104,8 +115,7 @@ struct HistoryView: View {
             }
         }
     }
-    
-    
+
     private func datePickerRow(title: String, selection: Binding<Date>, isStart: Bool) -> some View {
         HStack {
             Text(title)
@@ -118,8 +128,6 @@ struct HistoryView: View {
             )
             .labelsHidden()
             .accentColor(Color("AccentColor"))
-//            .background(Color.accentColor.opacity(0.12))
-//            .clipShape(RoundedRectangle(cornerRadius: 8))
             .environment(\.locale, Locale(identifier: "ru_RU"))
             .onChange(of: selection.wrappedValue) {
                 if isStart && selection.wrappedValue > endDate {
@@ -131,7 +139,7 @@ struct HistoryView: View {
             }
         }
     }
-    
+
     private var backButton: some View {
         Button(action: { dismiss() }) {
             HStack {
@@ -142,7 +150,7 @@ struct HistoryView: View {
             .foregroundColor(Color("ClockColor"))
         }
     }
-    
+
     private var topActions: some View {
         HStack {
             Button { showSortOptions = true } label: {
@@ -157,34 +165,45 @@ struct HistoryView: View {
             }
         }
     }
-    
-    // MARK: - Logic
-    
+
     @MainActor
     private func loadTransactions() async {
-        let dayStart = Calendar.current.startOfDay(for: startDate)
-        let dayEnd = Calendar.current.date(bySettingHour: 23, minute: 59, second: 59, of: endDate) ?? endDate
-        
+        isLoading = true
+        defer { isLoading = false }
+
         do {
-            let all = try await transactionsService.transactions(accountId: 1, from: dayStart, to: dayEnd)
-            let ids = try await categoriesService.categories(for: direction).map(\.id)
-            let filtered = all.filter { ids.contains($0.categoryId) }
-            rawTransactions = filtered
+            let loaded = try await TransactionsNetworkService.shared.loadTransactions(
+                accountId: 1,
+                from: startDate,
+                to: endDate,
+                isIncome: direction == .income
+            )
+
+            let filtered = loaded.filter {
+                direction == .income ? $0.category.isIncome : !$0.category.isIncome
+            }
+
+            self.transactions = filtered
+            self.totalAmount = filtered.reduce(0) { $0 + $1.amount }
             applySort()
+
         } catch {
-            print("Ошибка загрузки транзакций: \(error)")
+            await handleError(error)
         }
     }
-    
+
+    @MainActor
+    private func handleError(_ error: Error) {
+        errorMessage = error.localizedDescription
+        showError = true
+    }
+
     private func applySort() {
-        var sorted = rawTransactions
         switch sortOption {
         case .byDate:
-            sorted.sort { $0.transactionDate > $1.transactionDate }
+            transactions.sort { $0.transactionDate > $1.transactionDate }
         case .byAmount:
-            sorted.sort { $0.amount > $1.amount }
+            transactions.sort { $0.amount > $1.amount }
         }
-        transactions = sorted
-        totalAmount = sorted.reduce(0) { $0 + $1.amount }
     }
 }

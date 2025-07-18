@@ -2,7 +2,7 @@
 //  CurrencyManager.swift
 //  FinanceTamer
 //
-//  Created by Алия Гумирова on 25.06.2025.
+//  Created by Алия Гумирова on 18.07.2025.
 //
 
 import Foundation
@@ -22,5 +22,3 @@ final class CurrencyManager: ObservableObject {
         self.selectedCurrency = UserDefaults.standard.string(forKey: key) ?? "₽"
     }
 }
-
-

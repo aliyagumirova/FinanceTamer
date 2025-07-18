@@ -11,11 +11,12 @@ final class AnalysisViewController: UIViewController, UITableViewDataSource, UIT
     private let endDatePicker = UIDatePicker()
     private let amountLabel = UILabel()
     private let tableView = UITableView(frame: .zero, style: .insetGrouped)
+    private let loadingView = UIActivityIndicatorView(style: .large)
 
     private let transactionsService = TransactionsService.shared
     private let categoriesService = CategoriesService()
 
-    private var startDate = Calendar.current.date(byAdding: .month, value: -1, to: Date())!
+    private var startDate = Date()
     private var endDate = Date()
 
     private var rawTransactions: [Transaction] = []
@@ -24,11 +25,11 @@ final class AnalysisViewController: UIViewController, UITableViewDataSource, UIT
     private var sortOption: SortOption = .byDate
 
     private var categories: [Category] = []
-    private var tableHeightConstraint: NSLayoutConstraint?
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+        setupLoadingView()
         Task { await loadData() }
     }
 
@@ -78,48 +79,40 @@ final class AnalysisViewController: UIViewController, UITableViewDataSource, UIT
         tableView.delegate = self
         tableView.register(TransactionCell.self, forCellReuseIdentifier: "TransactionCell")
         tableView.separatorStyle = .none
-        tableView.backgroundColor = .clear
-        tableView.sectionHeaderHeight = 0
-        tableView.insetsContentViewsToSafeArea = false
-        tableView.layoutMargins = .zero
-        tableView.directionalLayoutMargins = .zero
-        tableView.contentInset = UIEdgeInsets(top: 4, left: 0, bottom: 4, right: 0)
-        tableView.tableHeaderView = nil
-
-        let tableContainer = UIView()
-        tableContainer.translatesAutoresizingMaskIntoConstraints = false
-        tableContainer.backgroundColor = .white
-        tableContainer.layer.cornerRadius = 10
-        tableContainer.clipsToBounds = true
-        tableContainer.addSubview(tableView)
+        tableView.backgroundColor = .white
+        tableView.layer.cornerRadius = 10
         tableView.translatesAutoresizingMaskIntoConstraints = false
 
-        NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: tableContainer.topAnchor),
-            tableView.leadingAnchor.constraint(equalTo: tableContainer.leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: tableContainer.trailingAnchor),
-            tableView.bottomAnchor.constraint(equalTo: tableContainer.bottomAnchor),
-            tableContainer.widthAnchor.constraint(equalToConstant: 370)
-        ])
-
-        tableHeightConstraint = tableContainer.heightAnchor.constraint(equalToConstant: 0)
-        tableHeightConstraint?.isActive = true
-
-        let contentStack = UIStackView(arrangedSubviews: [filtersStack, tableHeaderLabel, tableContainer])
+        let contentStack = UIStackView(arrangedSubviews: [filtersStack, tableHeaderLabel, tableView])
         contentStack.axis = .vertical
         contentStack.spacing = 16
+        contentStack.translatesAutoresizingMaskIntoConstraints = false
 
         let mainStack = UIStackView(arrangedSubviews: [topBar, contentStack])
         mainStack.axis = .vertical
-        mainStack.spacing = 12
+        mainStack.spacing = 16
         mainStack.translatesAutoresizingMaskIntoConstraints = false
+
         view.addSubview(mainStack)
 
         NSLayoutConstraint.activate([
             mainStack.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
-            mainStack.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            mainStack.widthAnchor.constraint(equalToConstant: 370),
-            mainStack.bottomAnchor.constraint(lessThanOrEqualTo: view.bottomAnchor)
+            mainStack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            mainStack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            mainStack.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            tableView.heightAnchor.constraint(greaterThanOrEqualToConstant: 200)
+        ])
+    }
+
+    private func setupLoadingView() {
+        loadingView.translatesAutoresizingMaskIntoConstraints = false
+        loadingView.hidesWhenStopped = true
+        loadingView.color = .gray
+        view.addSubview(loadingView)
+
+        NSLayoutConstraint.activate([
+            loadingView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            loadingView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
         ])
     }
 
@@ -179,16 +172,33 @@ final class AnalysisViewController: UIViewController, UITableViewDataSource, UIT
     }
 
     private func loadData() async {
+        await MainActor.run { loadingView.startAnimating() }
+        defer { Task { @MainActor in loadingView.stopAnimating() } }
+
         do {
             self.categories = try await categoriesService.categories(for: direction)
-            let all = try await transactionsService.transactions(accountId: 1, from: startDate, to: endDate)
-            let ids = Set(categories.map { $0.id })
-            let filtered = all.filter { ids.contains($0.categoryId) }
 
-            rawTransactions = filtered
-            applySort()
+            let loaded = try await TransactionsNetworkService.shared.loadTransactions(
+                accountId: 1,
+                from: startDate,
+                to: endDate,
+                isIncome: direction == .income
+            )
+
+            let filtered = loaded.filter {
+                direction == .income ? $0.category.isIncome : !$0.category.isIncome
+            }
+
+            await MainActor.run {
+                self.rawTransactions = filtered
+                self.applySort()
+                self.startDatePicker.setDate(self.startDate, animated: false)
+                self.endDatePicker.setDate(self.endDate, animated: false)
+            }
         } catch {
-            print("Ошибка загрузки: \(error)")
+            await MainActor.run {
+                self.showErrorAlert(message: error.localizedDescription)
+            }
         }
     }
 
@@ -203,17 +213,28 @@ final class AnalysisViewController: UIViewController, UITableViewDataSource, UIT
         totalAmount = transactions.reduce(0) { $0 + $1.amount }
         amountLabel.text = "\(totalAmount.formatted()) \(CurrencyManager.shared.selectedCurrency)"
         tableView.reloadData()
-        updateTableHeight()
     }
 
-    private func updateTableHeight() {
-        let rowHeight: CGFloat = 66
-        let totalHeight = rowHeight * CGFloat(transactions.count)
-        tableHeightConstraint?.constant = totalHeight
-        view.layoutIfNeeded()
-    }
+    private func showErrorAlert(message: String) {
+        let userFriendlyMessage: String
 
-    // MARK: - UITableView
+        if message.contains("timed out") {
+            userFriendlyMessage = "Сервер не отвечает. Попробуйте позже."
+        } else if message.contains("connection") || message.contains("offline") {
+            userFriendlyMessage = "Проверьте подключение к интернету."
+        } else if message.contains("decoding") {
+            userFriendlyMessage = "Получены повреждённые данные. Попробуйте позже."
+        } else {
+            userFriendlyMessage = "Неизвестная ошибка: \(message)"
+        }
+
+        let alert = UIAlertController(title: "Не удалось загрузить данные", message: userFriendlyMessage, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Повторить", style: .default) { _ in
+            Task { await self.loadData() }
+        })
+        alert.addAction(UIAlertAction(title: "Отмена", style: .cancel))
+        self.present(alert, animated: true)
+    }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         transactions.count
@@ -224,7 +245,6 @@ final class AnalysisViewController: UIViewController, UITableViewDataSource, UIT
             return UITableViewCell()
         }
         cell.configure(with: transactions[indexPath.row], totalAmount: totalAmount, categories: categories)
-
         return cell
     }
 

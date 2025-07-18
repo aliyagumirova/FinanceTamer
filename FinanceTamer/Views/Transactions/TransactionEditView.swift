@@ -29,8 +29,8 @@ struct TransactionEditView: View {
     @State private var showAlert = false
     @State private var alertMessage = ""
     
-    private let transactionsService = TransactionsService.shared
-    private let categoriesService = CategoriesService()
+    private let transactionsService = TransactionsNetworkService.shared
+    private let categoriesService = CategoriesNetworkService.shared
     private let bankAccountService = BankAccountsService()
     
     var body: some View {
@@ -44,11 +44,7 @@ struct TransactionEditView: View {
                             Text("Статья")
                                 .foregroundColor(.black)
                             Spacer()
-                            if let cat = selectedCategory {
-                                Text("\(String(cat.emoji)) \(cat.name)")
-                            } else {
-                                Text("Выбрать").foregroundColor(.gray)
-                            }
+                            categoryText
                         }
                     }
                     
@@ -128,20 +124,28 @@ struct TransactionEditView: View {
             }
             .onAppear {
                 Task {
-                    availableCategories = (try? await categoriesService.categories(for: direction)) ?? []
-                    
-                    print("Доступные категории:")
-                    for cat in availableCategories {
-                        print("- id: \(cat.id) | \(cat.emoji) \(cat.name)")
-                    }
+                    availableCategories = (try? await categoriesService.categories()) ?? []
                     
                     if case .edit(let transaction) = mode {
-                        selectedCategory = availableCategories.first(where: { $0.id == transaction.categoryId })
+                        selectedCategory = availableCategories.first(where: { $0.id == transaction.category.id })
                         amount = formattedAmount(transaction.amount)
                         date = transaction.transactionDate
                         comment = transaction.comment
                     }
                 }
+            }
+        }
+    }
+    
+    // MARK: - Вынесенный текст категории для упрощения body
+    
+    private var categoryText: some View {
+        Group {
+            if let cat = selectedCategory {
+                Text("\(String(cat.emoji)) \(cat.name)")
+            } else {
+                Text("Выбрать")
+                    .foregroundColor(.gray)
             }
         }
     }
@@ -162,51 +166,49 @@ struct TransactionEditView: View {
             showValidationError("Выберите категорию")
             return
         }
-        
+
         guard let parsedAmount = parseAmount(from: amount), parsedAmount > 0 else {
             showValidationError("Введите корректную сумму")
             return
         }
-        
+
         Task {
-            let account = try await bankAccountService.accountForUser(userId: 1)
-            
-            print("Создание/редактирование транзакции:")
-            print("accountId:", account.id)
-            print("categoryId:", category.id)
-            print("amount:", parsedAmount)
-            print("date:", date)
-            print("comment:", comment)
-            
-            switch mode {
-            case .create:
-                _ = try await transactionsService.create(
-                    accountId: account.id,
-                    categoryId: category.id,
-                    amount: parsedAmount,
-                    transactionDate: date,
-                    comment: comment
-                )
-                print("Транзакция создана")
-            case .edit(let old):
-                let updated = Transaction(
-                    id: old.id,
-                    accountId: account.id,
-                    categoryId: category.id,
-                    amount: parsedAmount,
-                    transactionDate: date,
-                    comment: comment,
-                    createdAt: old.createdAt,
-                    updatedAt: Date()
-                )
-                _ = try await transactionsService.update(updated)
-                print("Транзакция обновлена")
+            do {
+                let account = try await bankAccountService.accountForUser(userId: 1)
+               
+                switch mode {
+                case .create:
+                    let response = try await transactionsService.create(
+                        accountId: account.id,
+                        categoryId: category.id,
+                        amount: parsedAmount,
+                        transactionDate: date,
+                        comment: comment
+                    )
+
+                case .edit(let old):
+                    let updated = Transaction(
+                        id: old.id,
+                        account: account,
+                        category: category,
+                        amount: parsedAmount,
+                        transactionDate: date,
+                        comment: comment,
+                        createdAt: old.createdAt,
+                        updatedAt: Date()
+                    )
+
+                    let response = try await transactionsService.update(updated)
+                }
+
+                dismiss()
+            } catch {
+                showValidationError("Ошибка: \(error.localizedDescription)")
             }
-            
-            dismiss()
         }
     }
-    
+
+
     private func showValidationError(_ message: String) {
         alertMessage = message
         showAlert = true

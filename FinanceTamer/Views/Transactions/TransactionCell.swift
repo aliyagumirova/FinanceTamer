@@ -31,19 +31,21 @@ final class TransactionCell: UITableViewCell {
         return label
     }()
     
-    private let percentLabel: UILabel = {
-        let label = UILabel()
-        label.font = .systemFont(ofSize: 17)
-        label.textColor = .label
-        label.textAlignment = .right
-        return label
-    }()
-    
     private let amountLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 17)
         label.textColor = .label
         label.textAlignment = .right
+        label.setContentHuggingPriority(.required, for: .horizontal)
+        return label
+    }()
+    
+    private let percentLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 13)
+        label.textColor = .secondaryLabel
+        label.textAlignment = .right
+        label.setContentHuggingPriority(.required, for: .horizontal)
         return label
     }()
     
@@ -71,28 +73,29 @@ final class TransactionCell: UITableViewCell {
         let currency = CurrencyManager.shared.selectedCurrency
         amountLabel.text = "\(transaction.amount.formatted()) \(currency)"
         
-        if totalAmount > 0 {
+        //Процент от общей суммы
+        if totalAmount != 0 {
             let percent = (transaction.amount as NSDecimalNumber)
                 .dividing(by: totalAmount as NSDecimalNumber)
                 .multiplying(by: 100)
                 .doubleValue
-            percentLabel.text = String(format: "%.0f%%", percent)
+            
+            if abs(percent) >= 0.1 {
+                percentLabel.text = String(format: "%.1f%%", percent)
+            } else {
+                percentLabel.text = "<0.1%"
+            }
         } else {
             percentLabel.text = ""
         }
 
-        if let category = categories.first(where: { $0.id == transaction.categoryId }) {
-            iconView.text = String(category.emoji)
-            nameLabel.text = category.name
-        } else {
-            iconView.text = "?"
-            nameLabel.text = "—"
-        }
-
+        // Категория и комментарий
+        let category = transaction.category
+        iconView.text = String(category.emoji)
+        nameLabel.text = category.name
         commentLabel.text = transaction.comment.isEmpty ? nil : transaction.comment
     }
 
-    
     private func setupUI() {
         backgroundColor = .white
         selectionStyle = .none
@@ -110,10 +113,11 @@ final class TransactionCell: UITableViewCell {
         leftStack.spacing = 12
         leftStack.alignment = .center
         
-        let rightStack = UIStackView(arrangedSubviews: [percentLabel, amountLabel])
+        let rightStack = UIStackView(arrangedSubviews: [amountLabel, percentLabel])
         rightStack.axis = .vertical
         rightStack.spacing = 2
         rightStack.alignment = .trailing
+        rightStack.setContentHuggingPriority(.required, for: .horizontal)
         
         let mainStack = UIStackView(arrangedSubviews: [leftStack, rightStack, arrowImage])
         mainStack.axis = .horizontal
@@ -133,6 +137,6 @@ final class TransactionCell: UITableViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        contentView.layoutMargins = UIEdgeInsets.zero
+        contentView.layoutMargins = .zero
     }
 }

@@ -7,16 +7,16 @@
 
 import Foundation
 
-struct BankAccount: Identifiable, Codable {
+struct BankAccount: Identifiable, Codable, Equatable {
     let id: Int
     let userId: Int
     var name: String
-    var balance: Decimal
+    var balance: String
     var currency: String
     let createdAt: Date
     var updatedAt: Date
     
-    init(id: Int, userId: Int, name: String, balance: Decimal, currency: String, createdAt: Date, updatedAt: Date) {
+    init(id: Int, userId: Int, name: String, balance: String, currency: String, createdAt: Date, updatedAt: Date) {
         self.id = id
         self.userId = userId
         self.name = name

@@ -36,10 +36,28 @@ extension Transaction {
             return nil
         }
         
+        // 🔧 Минимальные объекты-заглушки для импорта
+        let account = BankAccount(
+            id: accountId,
+            userId: 0,
+            name: "Импортированный счёт",
+            balance: "0",
+            currency: "RUB",
+            createdAt: createdAt,
+            updatedAt: updatedAt
+        )
+        
+        let category = Category(
+            id: categoryId,
+            name: "Импорт",
+            emoji: "📥",
+            isIncome: false
+        )
+        
         return Transaction(
             id: id,
-            accountId: accountId,
-            categoryId: categoryId,
+            account: account,
+            category: category,
             amount: amount,
             transactionDate: date,
             comment: comment,
@@ -53,6 +71,6 @@ extension Transaction {
         let createdStr = ISO8601DateFormatter().string(from: createdAt)
         let updatedStr = ISO8601DateFormatter().string(from: updatedAt)
         
-        return "\(id),\(accountId),\(categoryId),\(amount),\(dateStr),\(comment),\(createdStr),\(updatedStr)"
+        return "\(id),\(account.id),\(category.id),\(amount),\(dateStr),\(comment),\(createdStr),\(updatedStr)"
     }
 }
